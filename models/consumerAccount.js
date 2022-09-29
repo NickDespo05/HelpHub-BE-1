@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const paymentInfo = require("./paymentInfo");
 
 //pulled from https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
 //the code below is checking for any of the characters in the variable in the email submitted
@@ -11,7 +12,7 @@ const validateEmail = function (email) {
 
 const validatePassword = (password) => {
     var re = /[A-Z]/g;
-    return re.test(passowrd);
+    return re.test(password);
 };
 
 //pulled from https://mongoosejs.com/docs/geojson.html
@@ -67,7 +68,11 @@ const consumerAccountSchema = new Schema({
             enum: ["Debit_Card", "Credit_Card", "Paypal", "Venmo"],
             required: true,
         },
-        info: {},
+        info: {
+            ref: "paymentInfo",
+            type: Schema.Types.ObjectId,
+            required: true,
+        },
     },
 });
 

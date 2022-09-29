@@ -9,6 +9,9 @@ app.get("/", (req, res) => {
     res.send("running");
 });
 
+const consumerAccount_controller = require("./controllers/consumerAccount_controller");
+app.use("/consumerAccounts", consumerAccount_controller);
+
 app.listen(3000, () => {
     console.log("port connected");
 });

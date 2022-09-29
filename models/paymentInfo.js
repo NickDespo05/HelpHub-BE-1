@@ -5,22 +5,33 @@ const consumerAccount = require("./models/consumerAccount");
 const paymentInfoSchema = new Schema({
     info: {
         type: () => {
-            if (consumerAccount.paymentType.type == "Debit card") {
-                return {
-                    cardNumber: {
-                        type: Number,
-                        required: true,
-                    },
-                    cvv: {
-                        type: Number,
-                        required: true,
-                    },
-                    date: {
-                        type: Date(),
-                        required: true,
-                    },
-                };
-            }
+            // if (consumerAccount.paymentType.type == "Debit_card") {
+            //     return {
+            //         cardNumber: {
+            //             type: Number,
+            //             required: true,
+            //         },
+            //         cvv: {
+            //             type: Number,
+            //             required: true,
+            //         },
+            //         date: {
+            //             type: Date(),
+            //             required: true,
+            //         },
+            //     };
+            // } else if (consumerAccount.paymentType.type == "paypal") {
+            //     return {
+            //        email: {
+            //           type: String;
+            //       }
+            //     };
+            // }
+            /*
+          My plan is to handle this in the future when needed, I do not know if i will need to 
+          push the data myself or if the api i am provided with will do it for me nor the 
+          neccesary format I need to store the data in yet ...
+          */
         },
     },
 });
