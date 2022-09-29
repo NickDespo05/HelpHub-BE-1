@@ -55,4 +55,24 @@ const consumerAccountSchema = new Schema({
     location: {
         type: locationSchema,
     },
+    age: {
+        type: Number,
+        required: true,
+        min: 18,
+        max: 100,
+    },
+    paymentType: {
+        type: {
+            type: String,
+            enum: ["Debit_Card", "Credit_Card", "Paypal", "Venmo"],
+            required: true,
+        },
+        info: {},
+    },
 });
+
+const consumerAccount = mongoose.model(
+    "consumerAccount",
+    consumerAccountSchema
+);
+module.exports = consumerAccount;
