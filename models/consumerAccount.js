@@ -53,9 +53,9 @@ const consumerAccountSchema = new Schema({
             "please enter a password with at least one uppercase character",
         ],
     },
-    location: {
-        type: locationSchema,
-    },
+    // location: {
+    //     type: locationSchema,
+    // },
     age: {
         type: Number,
         required: true,
@@ -68,11 +68,11 @@ const consumerAccountSchema = new Schema({
             enum: ["Debit_Card", "Credit_Card", "Paypal", "Venmo"],
             required: true,
         },
-        info: {
-            ref: "paymentInfo",
-            type: Schema.Types.ObjectId,
-            required: true,
-        },
+        // info: {
+        //     ref: "paymentInfo",
+        //     type: Schema.Types.ObjectId,
+        //     required: true,
+        // },
     },
 });
 

@@ -42,14 +42,15 @@ router.delete("/:id", (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const createdAccount = await new Account({
-            name: req.body.name,
-            emai: req.body.email,
-            password: req.body.password,
-            location: req.body.location,
-            age: req.body.age,
-            paymentType: req.body.paymentType,
-        }).save();
+        // const createdAccount = await new Account({
+        //     name: req.body.name,
+        //     email: req.body.email,
+        //     password: req.body.password,
+        //     location: req.body.location,
+        //     age: req.body.age,
+        //     paymentType: req.body.paymentType,
+        // }).save();
+        Account.create(req.body);
         res.json({ message: "created Account" });
         console.log("created account");
     } catch (error) {

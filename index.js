@@ -19,6 +19,7 @@ app.listen(3000, () => {
 app.use(express.static("public"));
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 mongoose.connect(
     "mongodb://localhost:27017",
