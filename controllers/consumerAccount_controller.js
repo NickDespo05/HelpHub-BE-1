@@ -16,6 +16,20 @@ router.get("/:id", (req, res) => {
     }
 });
 
+router.post("/", (req, res) => {
+    Account.create(req.body)
+        .then((createdAccount) => {
+            console.log(createdAccount);
+            res.status(200);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send("404").status(404);
+        });
+
+    console.log("created account");
+});
+
 router.put("/:id", (req, res) => {
     try {
         Account.findByIdAndUpdate(req.params.id, req.body).then(
@@ -36,25 +50,6 @@ router.delete("/:id", (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ message: "delete error" });
-        console.log(error);
-    }
-});
-
-router.post("/", async (req, res) => {
-    try {
-        // const createdAccount = await new Account({
-        //     name: req.body.name,
-        //     email: req.body.email,
-        //     password: req.body.password,
-        //     location: req.body.location,
-        //     age: req.body.age,
-        //     paymentType: req.body.paymentType,
-        // }).save();
-        Account.create(req.body);
-        res.json({ message: "created Account" });
-        console.log("created account");
-    } catch (error) {
-        res.status(500).json({ message: "error on post" });
         console.log(error);
     }
 });

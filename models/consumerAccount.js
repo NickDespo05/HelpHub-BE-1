@@ -1,73 +1,69 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
-const paymentInfo = require("./paymentInfo");
+// const paymentInfo = require("./paymentInfo");
 
 //pulled from https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
 //the code below is checking for any of the characters in the variable in the email submitted
 //if it they contain them it will throw an error
-const validateEmail = function (email) {
-    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    return re.test(email); //returns true or false
-};
+// const validateEmail = function (email) {
+//     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+//     return re.test(email); //returns true or false
+// };
 
-const validatePassword = (password) => {
-    var re = /[A-Z]/g;
-    return re.test(password);
-};
+// const validatePassword = (password) => {
+//     var re = /[A-Z]/g;
+//     return re.test(password);
+// };
 
-//pulled from https://mongoosejs.com/docs/geojson.html
-const locationSchema = new Schema({
-    type: {
-        type: String,
-        enum: ["Point"], //the location.type must be a "point"
-        required: true,
-    },
-    coordinates: {
-        type: [Number],
-        required: true,
-    },
-});
+// //pulled from https://mongoosejs.com/docs/geojson.html
+// const locationSchema = new Schema({
+//     type: {
+//         type: String,
+//         enum: ["Point"], //the location.type must be a "point"
+//         required: true,
+//     },
+//     coordinates: {
+//         type: [Number],
+//         required: true,
+//     },
+// });
 
-const consumerAccountSchema = new Schema({
+const consumerAccountSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        // required: true,
     },
     email: {
         type: String,
-        trim: true,
-        lowercase: true,
-        unique: true,
-        validate: [validateEmail, "Please enter a valid email"], //this is the message displayed
-        required: "Email is required",
-        match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            "Please fill a valid email address",
-        ],
+        // trim: true,
+        // lowercase: true,
+        // unique: true,
+        // required: true,
+        // validate: [validateEmail, "Please enter a valid email"], //this is the message displayed
+        // required: "Email is required",
+        // match: [
+        //     /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        //     "Please fill a valid email address",
+        // ],
     },
     password: {
         type: String,
-        required: true,
-        validate: [
-            validatePassword,
-            "please enter a password with at least one uppercase character",
-        ],
+        // required: true,
+        // validate: [
+        //     validatePassword,
+        //     "please enter a password with at least one uppercase character",
+        // ],
     },
     // location: {
     //     type: locationSchema,
     // },
     age: {
         type: Number,
-        required: true,
-        min: 18,
-        max: 100,
+        // required: true,
+        // min: 18,
+        // max: 100,
     },
     paymentType: {
-        type: {
-            type: String,
-            enum: ["Debit_Card", "Credit_Card", "Paypal", "Venmo"],
-            required: true,
-        },
+        type: String,
         // info: {
         //     ref: "paymentInfo",
         //     type: Schema.Types.ObjectId,
