@@ -23,8 +23,8 @@ router.post("/", (req, res) => {
             res.status(200);
         })
         .catch((error) => {
+            res.status(404).send(404);
             console.log(error);
-            res.send("404").status(404);
         });
 
     console.log("created account");
