@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 // const paymentInfo = require("./paymentInfo");
 
 //pulled from https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
@@ -59,8 +60,11 @@ const memberAccountSchema = new mongoose.Schema(
             },
         },
         jobsCompleted: {
-            type: Array,
-            numberOf: { type: Number },
+            type: {
+                type: Array,
+                type: Schema.Types.ObjectID,
+                ref: "job",
+            },
         },
         accountType: {
             type: String,
@@ -70,6 +74,11 @@ const memberAccountSchema = new mongoose.Schema(
     { toJson: { virtuals: true } }
 );
 
+memberAccountSchema.method.getNumberOfJobs = () => {
+    return `${this.name} has completed ${this.jobsCompleted.length} jobs.`;
+};
+
+//gets the # of jobs completed of the member
 memberAccountSchema.virtual("jobs", {
     ref: "job",
     localField: "_id",
