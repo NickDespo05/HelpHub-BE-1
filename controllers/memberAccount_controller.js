@@ -4,6 +4,22 @@ require("dotenv").config();
 const router = express.Router();
 const Account = require("../models/memberAccount");
 
+router.get("/", async (req, res) => {
+    //only returns the name and location feilds of mongoose object
+    await Account.find({ accountType: "provider" })
+        .select("name location")
+        .lean()
+        .then((foundAccount) => {
+            res.json(foundAccount);
+
+            res.status(200);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
+});
+
 //gets and account by id
 router.get("/:id", (req, res) => {
     const id = req.params.id;
