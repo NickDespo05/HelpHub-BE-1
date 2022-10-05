@@ -2,8 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const router = express.Router();
-const Account = require("../models/consumerAccount");
+const Account = require("../models/memberAccount");
 
+//gets and account by id
 router.get("/:id", (req, res) => {
     const id = req.params.id;
     try {
@@ -16,6 +17,7 @@ router.get("/:id", (req, res) => {
     }
 });
 
+//makes new account
 router.post("/", (req, res) => {
     Account.create(req.body)
         .then((createdAccount) => {
@@ -30,6 +32,7 @@ router.post("/", (req, res) => {
     console.log("created account");
 });
 
+//edits account
 router.put("/:id", (req, res) => {
     try {
         Account.findByIdAndUpdate(req.params.id, req.body).then(
@@ -43,6 +46,7 @@ router.put("/:id", (req, res) => {
     }
 });
 
+//deletes account
 router.delete("/:id", (req, res) => {
     try {
         Account.findByIdAndDelete(req.params.id).then((deletedAccount) => {

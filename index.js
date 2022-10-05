@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 require("dotenv").config();
 const app = express();
+const fs = require("fs");
 const bodyParser = require("body-parser");
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
@@ -13,8 +14,11 @@ app.get("/", (req, res) => {
     res.send("running");
 });
 
-const consumerAccount_controller = require("./controllers/consumerAccount_controller");
-app.use("/consumerAccounts", consumerAccount_controller);
+const memberAccount_controller = require("./controllers/memberAccount_controller");
+app.use("/memberAccounts", memberAccount_controller);
+
+const job_controller = require("./controllers/job_controller");
+app.use("/jobs", job_controller);
 
 app.listen(process.env.PORT, () => {
     console.log("port connected");
