@@ -5,6 +5,7 @@ require("dotenv").config();
 const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
+const bcrypt = require("mongoose-bcrypt");
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));

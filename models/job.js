@@ -31,7 +31,6 @@ const jobSchema = new mongoose.Schema(
     { toJson: { virtuals: true } }
 );
 
-
 jobSchema.virtual("memberAccount", {
     ref: "memberAccount",
     localField: "_id",

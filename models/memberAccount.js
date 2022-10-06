@@ -41,6 +41,7 @@ const memberAccountSchema = new mongoose.Schema(
                 validatePassword,
                 "please enter a password with at least one uppercase character",
             ],
+            bcrrypt: true,
         },
         location: {
             type: String,
@@ -84,6 +85,8 @@ memberAccountSchema.virtual("jobs", {
     localField: "_id",
     foreignField: "memberAccount",
 });
+
+memberAccountSchema.plugin(require("mongoose-bcrypt"), { rounds: 10 });
 
 const memberAccount = mongoose.model("memberAccount", memberAccountSchema);
 module.exports = memberAccount;

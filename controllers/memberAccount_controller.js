@@ -35,16 +35,19 @@ router.get("/:id", (req, res) => {
 
 //makes new account
 router.post("/", (req, res) => {
-    Account.create(req.body)
-        .then((createdAccount) => {
-            console.log(createdAccount);
-            res.status(200);
-        })
-        .catch((error) => {
-            res.status(404).send(404);
-            console.log(error);
-        });
-
+    Account.create(req.body, (err, createdAccount) => {
+        if (!err) {
+            createdAccount.verifyPassword(req.body.password, (err, valid) => {
+                if (err) {
+                    console.log(error);
+                } else if (valid) {
+                    consoel.log("valid");
+                } else {
+                    console.log("invalid");
+                }
+            });
+        }
+    });
     console.log("created account");
 });
 
