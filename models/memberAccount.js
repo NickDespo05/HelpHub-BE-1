@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const bcrypt = require("bcrypt");
 // const paymentInfo = require("./paymentInfo");
 
 //pulled from https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
@@ -75,8 +76,18 @@ const memberAccountSchema = new mongoose.Schema(
     { toJson: { virtuals: true } }
 );
 
-memberAccountSchema.method.getNumberOfJobs = () => {
+//gets # of jobs completed
+memberAccountSchema.methods.getNumberOfJobs = () => {
     return `${this.name} has completed ${this.jobsCompleted.length} jobs.`;
+};
+
+//method called for comparison on login of existing user
+//reference: https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+memberAccountSchema.methods.comparePassword = function (userPassword, cb) {
+    bcrypt.compare(userPassword, this.password, function (err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
 };
 
 //gets the # of jobs completed of the member

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const router = express.Router();
 const Account = require("../models/memberAccount");
+const bcrypt = require("bcrypt");
 
 router.get("/", async (req, res) => {
     //only returns the name and location feilds of mongoose object
@@ -33,7 +34,35 @@ router.get("/:id", (req, res) => {
     }
 });
 
-//makes new account
+//route for login of user with the response being a json object excluding the id and password
+//code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find 
+// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1 
+router.post("/login", async (req, res) => {
+    try {
+        Account.findOne({ email: req.body.email }, (err, foundAccount) => {
+            console.log(foundAccount);
+            if (err) throw err;
+
+            foundAccount.comparePassword(req.body.password, (err, isMatch) => {
+                if (err) throw err;
+                else if (isMatch == true) {
+                    Account.findOne({ email: req.body.email })
+                        .select("-password -_id")
+                        .then((foundAccount) => {
+                            res.json(foundAccount);
+                        });
+                } else {
+                    res.status(404);
+                }
+            });
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//makes new account with encrypted password
+// https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {
     Account.create(req.body, (err, createdAccount) => {
         if (!err) {
@@ -41,7 +70,7 @@ router.post("/", (req, res) => {
                 if (err) {
                     console.log(error);
                 } else if (valid) {
-                    consoel.log("valid");
+                    console.log("valid");
                 } else {
                     console.log("invalid");
                 }
