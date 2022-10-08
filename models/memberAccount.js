@@ -16,6 +16,18 @@ const validatePassword = (password) => {
     return re.test(password);
 };
 
+//creating shcema for locations using GeoJson
+const geoSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        default: "point",
+    },
+    coordinates: {
+        type: [Number],
+        index: "2dsphere",
+    },
+});
+
 const memberAccountSchema = new mongoose.Schema(
     {
         name: {
@@ -72,6 +84,7 @@ const memberAccountSchema = new mongoose.Schema(
             type: String,
             enum: ["consumer", "provider"],
         },
+        geometry: geoSchema,
     },
     { toJson: { virtuals: true } }
 );

@@ -7,8 +7,17 @@ const bcrypt = require("bcrypt");
 
 router.get("/", async (req, res) => {
     //only returns the name and location feilds of mongoose object
-    await Account.find({ accountType: "provider" })
-        .select("name location")
+    //the GeoNear function uses the coordinates to return documents in the
+    //database that are near the lng and lat through the query params
+    await Account.geoNear(
+        {
+            type: "Point",
+            coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)],
+        },
+        { maxDistance: 1000, spherical: true }
+    )
+        .find({ accountType: "provider" })
+        .select("-password -_id")
         .lean()
         .then((foundAccount) => {
             res.json(foundAccount);
@@ -25,9 +34,11 @@ router.get("/", async (req, res) => {
 router.get("/:id", (req, res) => {
     const id = req.params.id;
     try {
-        Account.findById(id).then((foundAccount) => {
-            res.json(foundAccount);
-        });
+        Account.findById(id)
+            .select("-_id -password")
+            .then((foundAccount) => {
+                res.json(foundAccount);
+            });
     } catch (error) {
         res.status(500).send(error);
         console.log(error);
@@ -35,8 +46,8 @@ router.get("/:id", (req, res) => {
 });
 
 //route for login of user with the response being a json object excluding the id and password
-//code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find 
-// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1 
+//code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find
+// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 router.post("/login", async (req, res) => {
     try {
         Account.findOne({ email: req.body.email }, (err, foundAccount) => {
