@@ -2,6 +2,18 @@ const mongoose = require("mongoose");
 const memberAccount = require("./memberAccount");
 const { Schema } = mongoose;
 
+//creates geoJson location shcema
+const geoSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        default: "point",
+    },
+    coordinates: {
+        type: [Number],
+        index: "2dsphere",
+    },
+});
+
 const jobSchema = new mongoose.Schema(
     {
         name: {
