@@ -5,6 +5,7 @@ const router = express.Router();
 const Account = require("../models/memberAccount");
 const Jobs = require("../models/job");
 
+//returns jobs in the area
 router.get("/", async (req, res) => {
     await Jobs.find()
         .lean()
@@ -17,6 +18,7 @@ router.get("/", async (req, res) => {
         });
 });
 
+//returns a job by its id
 router.get("/:id", async (req, res) => {
     await Jobs.findbyId(req.params.id)
         .then((foundJobs) => {
@@ -28,6 +30,7 @@ router.get("/:id", async (req, res) => {
         });
 });
 
+//creates a job
 router.post("/", (req, res) => {
     Jobs.create(req.body)
         .then((createdJob) => {
@@ -40,6 +43,7 @@ router.post("/", (req, res) => {
         });
 });
 
+//updates a job
 router.put("/:id", (req, res) => {
     Jobs.findByIdAndUpdate(req.params.id)
         .then((updatedJob) => {
@@ -52,6 +56,7 @@ router.put("/:id", (req, res) => {
         });
 });
 
+//deletes a job
 router.delete("/:id", (req, res) => {
     Jobs.findbyIdAndDelete(req.params.id)
         .then((deletedJob) => {
