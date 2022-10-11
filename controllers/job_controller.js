@@ -7,7 +7,14 @@ const Jobs = require("../models/job");
 
 //returns jobs in the area
 router.get("/", async (req, res) => {
-    await Jobs.find()
+    await Jobs.geoNear(
+        {
+            type: "Point",
+            coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)],
+        },
+        { maxDistance: 1000, spherical: true }
+    )
+        .find()
         .lean()
         .then((jobsFound) => {
             res.json(jobsFound);
