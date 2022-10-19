@@ -16,7 +16,7 @@ const validatePassword = (password) => {
     return re.test(password);
 };
 
-//creating shcema for locations using GeoJson
+//creating schema for locations using GeoJson
 const geoSchema = new mongoose.Schema({
     type: {
         type: String,
@@ -32,16 +32,16 @@ const memberAccountSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            //required: true,
         },
         email: {
             type: String,
             trim: true,
             lowercase: true,
             unique: true,
-            required: true,
-            validate: [validateEmail, "Please enter a valid email"], //this is the message displayed
-            required: "Email is required",
+            //required: true,
+            // validate: [validateEmail, "Please enter a valid email"], //this is the message displayed
+            //          required: "Email is required",
             match: [
                 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                 "Please fill a valid email address",
@@ -49,19 +49,19 @@ const memberAccountSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
+            //            required: true,
             validate: [
                 validatePassword,
                 "please enter a password with at least one uppercase character",
             ],
-            bcrrypt: true,
+            bcrypt: true,
         },
         location: {
             type: String,
         },
         age: {
             type: Number,
-            required: true,
+            // required: true,
             min: 18,
             max: 100,
         },
@@ -69,7 +69,7 @@ const memberAccountSchema = new mongoose.Schema(
             type: String,
             info: {
                 // ref: "paymentInfo",
-                enum: ["debitCard", "creaditCard", "payPal", "Venmo"],
+                enum: ["debitCard", "creditCard", "payPal", "Venmo"],
                 required: true,
             },
         },

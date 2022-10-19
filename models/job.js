@@ -21,8 +21,7 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
         location: {
-            type: String,
-            //to be determined
+            type: geoSchema,
             required: true,
         },
         postedBy: {
@@ -37,7 +36,7 @@ const jobSchema = new mongoose.Schema(
         },
         image: {
             data: Buffer,
-            contentTyps: String,
+            contentType: String,
         },
     },
     { toJson: { virtuals: true } }

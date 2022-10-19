@@ -7,14 +7,26 @@ const Jobs = require("../models/job");
 
 //returns jobs in the area
 router.get("/", async (req, res) => {
-    await Jobs.geoNear(
-        {
-            type: "Point",
-            coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)],
-        },
-        { maxDistance: 1000, spherical: true }
+    await Jobs.find(
+        Jobs.aggregate([
+            {
+                $geoNear: {
+                    near: {
+                        type: "Point",
+                        coordinates: [
+                            parseFloat(req.query.lng),
+                            parseFloat(req.query.lat),
+                        ],
+                    },
+                    distanceField: "dist.calculated",
+                    maxDistance: 2,
+                    query: { category: "Parks" },
+                    includeLocs: "dist.location",
+                    spherical: true,
+                },
+            },
+        ])
     )
-        .find()
         .lean()
         .then((jobsFound) => {
             res.json(jobsFound);
@@ -25,9 +37,11 @@ router.get("/", async (req, res) => {
         });
 });
 
+//[parseFloat(req.query.lng), parseFloat(req.query.lat)]
+
 //returns a job by its id
 router.get("/:id", async (req, res) => {
-    await Jobs.findbyId(req.params.id)
+    await Jobs.findById(req.params.id)
         .then((foundJobs) => {
             res.json(foundJobs);
         })
@@ -65,7 +79,7 @@ router.put("/:id", (req, res) => {
 
 //deletes a job
 router.delete("/:id", (req, res) => {
-    Jobs.findbyIdAndDelete(req.params.id)
+    Jobs.findByIdAndDelete(req.params.id)
         .then((deletedJob) => {
             console.log(deletedJob);
             res.status(200);

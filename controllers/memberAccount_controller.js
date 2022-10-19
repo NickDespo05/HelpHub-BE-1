@@ -76,19 +76,21 @@ router.post("/login", async (req, res) => {
 // https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {
     Account.create(req.body, (err, createdAccount) => {
+        console.log(createdAccount);
         if (!err) {
             createdAccount.verifyPassword(req.body.password, (err, valid) => {
                 if (err) {
-                    console.log(error);
+                    console.log(err);
                 } else if (valid) {
                     console.log("valid");
                 } else {
                     console.log("invalid");
                 }
             });
+        } else {
+            console.log(err);
         }
     });
-    console.log("created account");
 });
 
 //edits account

@@ -11,6 +11,11 @@ const bcrypt = require("mongoose-bcrypt");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
     res.send("running");
 });
@@ -24,11 +29,6 @@ app.use("/jobs", job_controller);
 app.listen(process.env.PORT, () => {
     console.log("port connected");
 });
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(express.static("public"));
 
 mongoose.connect(
     process.env.MONGO_URI,
