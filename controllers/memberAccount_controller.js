@@ -6,6 +6,7 @@ const Account = require("../models/memberAccount");
 const bcrypt = require("bcrypt");
 
 /**
+ * @TODO : (Frontend)
  * for the locations we need to access them via user input through a req.body through
  * a fetch request
  */
@@ -68,7 +69,7 @@ router.post("/login", async (req, res) => {
 });
 
 //makes new account with encrypted password
-// https://www.npmjs.com/package/mongoose-bcrypt
+//documentation used: https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {
     Account.create(req.body, (err, createdAccount) => {
         console.log(createdAccount);

@@ -5,7 +5,7 @@ const router = express.Router();
 const Account = require("../models/memberAccount");
 const Jobs = require("../models/job");
 
-//returns jobs in the area
+//returns not completed jobs in the area
 router.get("/", async (req, res) => {
     await Jobs.find({ location: req.body.location, notCompleted: true })
         .lean()
@@ -17,8 +17,6 @@ router.get("/", async (req, res) => {
             res.status(404);
         });
 });
-
-//[parseFloat(req.query.lng), parseFloat(req.query.lat)]
 
 //returns a job by its id
 router.get("/:id", async (req, res) => {
@@ -45,7 +43,7 @@ router.post("/", (req, res) => {
         });
 });
 
-//updates a job
+//updates a job and its info
 router.put("/:id", (req, res) => {
     Jobs.findByIdAndUpdate(req.params.id)
         .then((updatedJob) => {

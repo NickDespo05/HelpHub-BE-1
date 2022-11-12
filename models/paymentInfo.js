@@ -9,6 +9,13 @@ const paymentInfoSchema = new Schema({
 const paymentInfo = mongoose.model("paymentInfo", paymentInfoSchema);
 module.exports = paymentInfo;
 
+/*
+          My plan is to handle this in the future when needed, I do not know if i will need to 
+          push the data myself or if the api i am provided with will do it for me nor the 
+          neccesary format I need to store the data in yet ...
+          */
+//},
+
 //this is just here if i need it
 // type: () => {
 // if (consumerAccount.paymentType.type == "Debit_card") {
@@ -33,9 +40,3 @@ module.exports = paymentInfo;
 //       }
 //     };
 // }
-/*
-          My plan is to handle this in the future when needed, I do not know if i will need to 
-          push the data myself or if the api i am provided with will do it for me nor the 
-          neccesary format I need to store the data in yet ...
-          */
-//},
