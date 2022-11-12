@@ -5,18 +5,13 @@ const router = express.Router();
 const Account = require("../models/memberAccount");
 const bcrypt = require("bcrypt");
 
+/**
+ * for the locations we need to access them via user input through a req.body through
+ * a fetch request
+ */
+
 router.get("/", async (req, res) => {
-    //only returns the name and location feilds of mongoose object
-    //the GeoNear function uses the coordinates to return documents in the
-    //database that are near the lng and lat through the query params
-    await Account.geoNear(
-        {
-            type: "Point",
-            coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)],
-        },
-        { maxDistance: 1000, spherical: true }
-    )
-        .find({ accountType: "provider" })
+    await Account.find({ accountType: "provider", location: req.body.location })
         .select("-password -_id")
         .lean()
         .then((foundAccount) => {
@@ -77,6 +72,7 @@ router.post("/login", async (req, res) => {
 router.post("/", (req, res) => {
     Account.create(req.body, (err, createdAccount) => {
         console.log(createdAccount);
+        res.json(createdAccount);
         if (!err) {
             createdAccount.verifyPassword(req.body.password, (err, valid) => {
                 if (err) {

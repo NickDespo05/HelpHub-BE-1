@@ -16,18 +16,6 @@ const validatePassword = (password) => {
     return re.test(password);
 };
 
-//creating schema for locations using GeoJson
-const geoSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        default: "point",
-    },
-    coordinates: {
-        type: [Number],
-        index: "2dsphere",
-    },
-});
-
 const memberAccountSchema = new mongoose.Schema(
     {
         name: {
@@ -36,32 +24,28 @@ const memberAccountSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            trim: true,
             lowercase: true,
             unique: true,
-            //required: true,
-            // validate: [validateEmail, "Please enter a valid email"], //this is the message displayed
-            //          required: "Email is required",
-            match: [
-                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                "Please fill a valid email address",
-            ],
+            required: true,
+            validate: [validateEmail, "Please enter a valid email"], //this is the message displayed
+            required: "Email is required",
         },
         password: {
             type: String,
-            //            required: true,
             validate: [
                 validatePassword,
                 "please enter a password with at least one uppercase character",
             ],
             bcrypt: true,
+            required: true,
         },
         location: {
             type: String,
+            required: true,
         },
         age: {
             type: Number,
-            // required: true,
+            required: true,
             min: 18,
             max: 100,
         },
@@ -84,7 +68,6 @@ const memberAccountSchema = new mongoose.Schema(
             type: String,
             enum: ["consumer", "provider"],
         },
-        geometry: geoSchema,
     },
     { toJson: { virtuals: true } }
 );

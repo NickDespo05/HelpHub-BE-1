@@ -38,6 +38,11 @@ const jobSchema = new mongoose.Schema(
             data: Buffer,
             contentType: String,
         },
+        notCompleted: {
+            type: Boolean,
+            default: true,
+            required: true,
+        },
     },
     { toJson: { virtuals: true } }
 );
