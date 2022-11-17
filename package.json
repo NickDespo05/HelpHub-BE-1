@@ -18,9 +18,14 @@
   },
   "homepage": "https://github.com/NickDespo05/HelpHub-BE-1#readme",
   "dependencies": {
+    "api": "^4.5.2",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
+    "fs": "^0.0.1-security",
     "method-override": "^3.0.0",
-    "mongoose": "^6.6.2",
+    "mongoose": "^6.4.4",
+    "mongoose-bcrypt": "^1.10.0",
     "nodemon": "^2.0.20",
     "react": "^18.2.0"
   }
