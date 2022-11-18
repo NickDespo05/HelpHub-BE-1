@@ -29,7 +29,11 @@ const jobSchema = new mongoose.Schema(
             ref: "memberAccount",
             required: true,
         },
-
+        category: {
+            type: String,
+            enum: ["landscaping", "petCare", "movingHelp", "homeCleaning"],
+            required: true,
+        },
         provider: {
             type: Schema.Types.ObjectID,
             ref: "memberAccount",
