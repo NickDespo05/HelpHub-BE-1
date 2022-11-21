@@ -6,6 +6,7 @@ const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const bcrypt = require("mongoose-bcrypt");
+const cors = require("cors");
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,11 +14,11 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(cors);
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-    res.send("running");
+  res.send("running");
 });
 
 const memberAccount_controller = require("./controllers/memberAccount_controller");
@@ -26,14 +27,17 @@ app.use("/memberAccounts", memberAccount_controller);
 const job_controller = require("./controllers/job_controller");
 app.use("/jobs", job_controller);
 
+const authentication_controller = require("./controllers/authentication");
+app.use("/authentication", authentication_controller);
+
 app.listen(process.env.PORT, () => {
-    console.log("port connected");
+  console.log(`connected at port ${process.env.PORT}`);
 });
 
 mongoose.connect(
-    process.env.MONGO_URI,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => {
-        console.log("connected to mongo");
-    }
+  process.env.MONGO_URI,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log("connected to mongo");
+  }
 );
