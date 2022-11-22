@@ -21,7 +21,7 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
         location: {
-            type: geoSchema,
+            type: String,
             required: true,
         },
         postedBy: {

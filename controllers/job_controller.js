@@ -30,6 +30,17 @@ router.get("/:id", async (req, res) => {
         });
 });
 
+router.get("/postedby/:postedBy", async (req, res) => {
+    await Jobs.find( {postedBy: req.params.postedBy})
+        .lean()
+        .then((foundPoster) => {
+            res.json(foundPoster);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
+});
 //creates a job
 router.post("/", (req, res) => {
     Jobs.create(req.body)
