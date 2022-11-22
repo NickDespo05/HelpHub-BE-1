@@ -68,6 +68,12 @@ const memberAccountSchema = new mongoose.Schema(
             type: String,
             enum: ["consumer", "provider"],
         },
+        chats: {
+            type: {
+                type: Schema.Types.ObjectID,
+                ref: "chats",
+            },
+        },
     },
     { toJson: { virtuals: true } }
 );
@@ -87,11 +93,20 @@ memberAccountSchema.methods.comparePassword = function (userPassword, cb) {
 };
 
 //gets the # of jobs completed of the member
-memberAccountSchema.virtual("jobs", {
-    ref: "job",
-    localField: "_id",
-    foreignField: "memberAccount",
-});
+memberAccountSchema.virtual(
+    "jobs",
+    {
+        ref: "job",
+        localField: "_id",
+        foreignField: "memberAccount",
+    },
+    "chats",
+    {
+        ref: "chats",
+        localField: "_id",
+        foreignField: "memberAccount",
+    }
+);
 
 // plugin so bcrypt can be used
 memberAccountSchema.plugin(require("mongoose-bcrypt"), { rounds: 10 });

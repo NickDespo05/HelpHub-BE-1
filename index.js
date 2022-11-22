@@ -26,6 +26,9 @@ app.use("/memberAccounts", memberAccount_controller);
 const job_controller = require("./controllers/job_controller");
 app.use("/jobs", job_controller);
 
+const chats_controller = require("./controllers/chats_controller");
+app.use("/chats", chats_controller);
+
 app.listen(process.env.PORT, () => {
     console.log("port connected");
 });
