@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
@@ -27,8 +27,8 @@ app.use("/memberAccounts", memberAccount_controller);
 const job_controller = require("./controllers/job_controller");
 app.use("/jobs", job_controller);
 
-const authentication_controller = require("./controllers/authentication");
-app.use("/authentication", authentication_controller);
+// const authentication_controller = require("./controllers/authentication");
+// app.use("/authentication", authentication_controller);
 
 app.listen(process.env.PORT, () => {
   console.log(`connected at port ${process.env.PORT}`);

@@ -94,7 +94,7 @@ memberAccountSchema.virtual("jobs", {
 });
 
 // plugin so bcrypt can be used
-// memberAccountSchema.plugin(require("mongoose-bcrypt"), { rounds: 10 });
+memberAccountSchema.plugin(require("mongoose-bcrypt"), { rounds: 10 });
 
 const memberAccount = mongoose.model("memberAccount", memberAccountSchema);
 module.exports = memberAccount;

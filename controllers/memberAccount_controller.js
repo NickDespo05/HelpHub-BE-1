@@ -48,7 +48,10 @@ router.post("/login", async (req, res) => {
   try {
     Account.findOne({ email: req.body.email }, (err, foundAccount) => {
       console.log(foundAccount);
-      if (err) throw err;
+      if (err) {
+        console.log(req.body);
+        throw err;
+      }
 
       foundAccount.comparePassword(req.body.password, (err, isMatch) => {
         if (err) throw err;
@@ -71,11 +74,10 @@ router.post("/login", async (req, res) => {
 //makes new account with encrypted password
 //documentation used: https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {
-  console.log(req.body);
   Account.create(req.body, (err, createdAccount) => {
-    console.log(createdAccount);
     console.log(req.body);
     res.json(createdAccount);
+    console.log(createdAccount);
     if (!err) {
       createdAccount.verifyPassword(req.body.password, (err, valid) => {
         if (err) {
