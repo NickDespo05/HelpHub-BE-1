@@ -68,6 +68,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
+bcrypt.compare()
 //makes new account with encrypted password
 //documentation used: https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {

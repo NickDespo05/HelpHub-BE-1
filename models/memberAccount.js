@@ -74,7 +74,12 @@ const memberAccountSchema = new mongoose.Schema(
                 ref: "chats",
             },
         },
+        img: {
+            data: Buffer,
+            contentType: String,
+        },
     },
+    { timestamps: true },
     { toJson: { virtuals: true } }
 );
 

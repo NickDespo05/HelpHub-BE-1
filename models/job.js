@@ -2,18 +2,6 @@ const mongoose = require("mongoose");
 const memberAccount = require("./memberAccount");
 const { Schema } = mongoose;
 
-//creates geoJson location shcema
-const geoSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        default: "point",
-    },
-    coordinates: {
-        type: [Number],
-        index: "2dsphere",
-    },
-});
-
 const jobSchema = new mongoose.Schema(
     {
         name: {
@@ -47,15 +35,28 @@ const jobSchema = new mongoose.Schema(
             default: true,
             required: true,
         },
+        chatRoom: {
+            type: Schema.Types.ObjectID,
+            ref: "chats",
+        },
     },
     { toJson: { virtuals: true } }
 );
 
-jobSchema.virtual("memberAccount", {
-    ref: "memberAccount",
-    localField: "_id",
-    foreignField: "job",
-});
+jobSchema.virtual(
+    "memberAccount",
+    {
+        ref: "memberAccount",
+        localField: "_id",
+        foreignField: "job",
+    },
+    "chats",
+    {
+        ref: "chats",
+        localField: "_id",
+        foreignField: "chat",
+    }
+);
 
 const job = mongoose.model("job", jobSchema);
 module.exports = job;
