@@ -4,6 +4,7 @@ require("dotenv").config();
 const router = express.Router();
 const Account = require("../models/memberAccount");
 const bcrypt = require("bcrypt");
+const jwt = require("json-web-token");
 
 /**
  * @TODO : (Frontend)
@@ -44,33 +45,69 @@ router.get("/:id", (req, res) => {
 //route for login of user with the response being a json object excluding the id and password
 //code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find
 // https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
-router.post("/login", async (req, res) => {
-  try {
-    Account.findOne({ email: req.body.email }, (err, foundAccount) => {
-      console.log(foundAccount);
-      if (err) {
-        console.log(req.body);
-        throw err;
-      }
+// router.post("/login", async (req, res) => {
+//   try {
+//     Account.findOne({ email: req.body.email }, (err, foundAccount) => {
+//       if (err) {
+//         console.log(req.body);
+//         throw err;
+//       }
 
-      foundAccount.comparePassword(req.body.password, (err, isMatch) => {
-        if (err) throw err;
-        else if (isMatch == true) {
-          Account.findOne({ email: req.body.email })
-            .select("-password -_id")
-            .then((foundAccount) => {
-              res.json(foundAccount);
-            });
-        } else {
-          res.status(404);
-        }
-      });
+//       foundAccount.comparePassword(req.body.password, (err, isMatch) => {
+//         if (err) throw err;
+//         else if (isMatch == true) {
+//           Account.findOne({ email: req.body.email })
+//             .select("-password -_id")
+//             .then((foundAccount) => {
+//               res.json({ foundAccount });
+//             });
+//         } else {
+//           res.status(404);
+//         }
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+router.post("/login", async (req, res) => {
+  let user = await Account.findOne({ email: req.body.email });
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    res.status(404).json({
+      message: "Could not find a user with the provided email and/or password",
     });
-  } catch (error) {
-    console.log(error);
+  } else {
+    const result = await jwt.encode(process.env.JWT_SECRET, {
+      id: user._id,
+    });
+    res.json({ user: user, token: result.value });
   }
 });
 
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     if (!(email && password)) {
+//       res.status(400).send("All input is required");
+//     }
+
+//     const user = await Account.findOne({ email });
+
+//     if (user && (await bcrypt.compare(password, user.password))) {
+//       const token = jwt.sign(
+//         { user_id: user._id, email },
+//         process.env.JWT_SECRET,
+//         { expiresIn: "2h" }
+//       );
+
+//       user.token = token;
+
+//       res.status(200).json(user);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 //makes new account with encrypted password
 //documentation used: https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {

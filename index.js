@@ -6,6 +6,7 @@ const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const bcrypt = require("mongoose-bcrypt");
+const defineCurrentUser = require("./middleware/defineCurrentUser");
 const cors = require("cors");
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
+app.use(defineCurrentUser);
 
 app.get("/", (req, res) => {
   res.send("running");
