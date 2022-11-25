@@ -28,18 +28,22 @@ router.get("/", async (req, res) => {
 });
 
 //gets and account by id
-router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  try {
-    Account.findById(id)
-      .select("-_id -password")
-      .then((foundAccount) => {
-        res.json(foundAccount);
-      });
-  } catch (error) {
-    res.status(500).send(error);
-    console.log(error);
-  }
+// router.get("/:id", (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     Account.findById(id)
+//       .select("-_id -password")
+//       .then((foundAccount) => {
+//         res.json(foundAccount);
+//       });
+//   } catch (error) {
+//     res.status(500).send(error);
+//     console.log(error);
+//   }
+// });
+
+router.get("/memberAccount", async (req, res) => {
+  res.json(req.currentUser);
 });
 
 //route for login of user with the response being a json object excluding the id and password
