@@ -33,6 +33,8 @@ const chatSchema = new mongoose.Schema(
         sentBy: {
             type: [String],
         },
+        // this is for the frontend to get to display
+        // all of the names, both arrays go hand in hand
     },
     { toJson: { virtuals: true } }
 );
