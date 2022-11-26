@@ -27,53 +27,10 @@ router.get("/", async (req, res) => {
     });
 });
 
-//gets and account by id
-// router.get("/:id", (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     Account.findById(id)
-//       .select("-_id -password")
-//       .then((foundAccount) => {
-//         res.json(foundAccount);
-//       });
-//   } catch (error) {
-//     res.status(500).send(error);
-//     console.log(error);
-//   }
-// });
-
 router.get("/memberAccount", async (req, res) => {
   res.json(req.currentUser);
 });
 
-//route for login of user with the response being a json object excluding the id and password
-//code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find
-// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
-// router.post("/login", async (req, res) => {
-//   try {
-//     Account.findOne({ email: req.body.email }, (err, foundAccount) => {
-//       if (err) {
-//         console.log(req.body);
-//         throw err;
-//       }
-
-//       foundAccount.comparePassword(req.body.password, (err, isMatch) => {
-//         if (err) throw err;
-//         else if (isMatch == true) {
-//           Account.findOne({ email: req.body.email })
-//             .select("-password -_id")
-//             .then((foundAccount) => {
-//               res.json({ foundAccount });
-//             });
-//         } else {
-//           res.status(404);
-//         }
-//       });
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 router.post("/login", async (req, res) => {
   let user = await Account.findOne({ email: req.body.email });
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
@@ -88,30 +45,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// router.post("/login", async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-//     if (!(email && password)) {
-//       res.status(400).send("All input is required");
-//     }
-
-//     const user = await Account.findOne({ email });
-
-//     if (user && (await bcrypt.compare(password, user.password))) {
-//       const token = jwt.sign(
-//         { user_id: user._id, email },
-//         process.env.JWT_SECRET,
-//         { expiresIn: "2h" }
-//       );
-
-//       user.token = token;
-
-//       res.status(200).json(user);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 //makes new account with encrypted password
 //documentation used: https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {
@@ -162,3 +95,73 @@ router.delete("/:id", (req, res) => {
 });
 
 module.exports = router;
+
+//OLD STUFF JUST HERE IN CASE IT ENDS UP BREAKING
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     if (!(email && password)) {
+//       res.status(400).send("All input is required");
+//     }
+
+//     const user = await Account.findOne({ email });
+
+//     if (user && (await bcrypt.compare(password, user.password))) {
+//       const token = jwt.sign(
+//         { user_id: user._id, email },
+//         process.env.JWT_SECRET,
+//         { expiresIn: "2h" }
+//       );
+
+//       user.token = token;
+
+//       res.status(200).json(user);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+//route for login of user with the response being a json object excluding the id and password
+//code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find
+// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+// router.post("/login", async (req, res) => {
+//   try {
+//     Account.findOne({ email: req.body.email }, (err, foundAccount) => {
+//       if (err) {
+//         console.log(req.body);
+//         throw err;
+//       }
+
+//       foundAccount.comparePassword(req.body.password, (err, isMatch) => {
+//         if (err) throw err;
+//         else if (isMatch == true) {
+//           Account.findOne({ email: req.body.email })
+//             .select("-password -_id")
+//             .then((foundAccount) => {
+//               res.json({ foundAccount });
+//             });
+//         } else {
+//           res.status(404);
+//         }
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+//gets and account by id
+// router.get("/:id", (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     Account.findById(id)
+//       .select("-_id -password")
+//       .then((foundAccount) => {
+//         res.json(foundAccount);
+//       });
+//   } catch (error) {
+//     res.status(500).send(error);
+//     console.log(error);
+//   }
+// });
