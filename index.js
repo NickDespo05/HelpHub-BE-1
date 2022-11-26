@@ -1,11 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors')
 const methodOverride = require("method-override");
 require("dotenv").config();
 const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const bcrypt = require("mongoose-bcrypt");
+const defineCurrentUser =require('./middleware/defineCurrentUser')
+const http = require('http')
+const { Server } = require('socket.io')
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,7 +23,8 @@ app.use(defineCurrentUser);
 
 
 /** create chat server via socket.io  */
-const io = new Server({
+const server = http.createServer(app)
+const io = new Server({server,
   cors:{
     origin:"http://localhost:3000/myjobs",
     methods: ["GET", "POST"]
@@ -60,7 +65,6 @@ const memberAccount_controller = require("./controllers/memberAccount_controller
 app.use("/memberAccounts", memberAccount_controller);
 
 const job_controller = require("./controllers/job_controller");
-const { Server } = require("http");
 app.use("/jobs", job_controller);
 
 // const authentication_controller = require("./controllers/authentication");
