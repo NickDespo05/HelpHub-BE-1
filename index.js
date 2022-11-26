@@ -6,11 +6,6 @@ const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const bcrypt = require("mongoose-bcrypt");
-const defineCurrentUser = require("./middleware/defineCurrentUser");
-const cors = require("cors");
-
-/** require Server from socket.io */
-const { Server } =require('socket.io')
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));

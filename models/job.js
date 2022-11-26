@@ -21,7 +21,7 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
         location: {
-            type: geoSchema,
+            type: String,
             required: true,
         },
         postedBy: {
@@ -29,7 +29,11 @@ const jobSchema = new mongoose.Schema(
             ref: "memberAccount",
             required: true,
         },
-
+        category: {
+            type: String,
+            enum: ["landscaping", "petCare", "movingHelp", "homeCleaning"],
+            required: true,
+        },
         provider: {
             type: Schema.Types.ObjectID,
             ref: "memberAccount",
