@@ -1,13 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors')
 const methodOverride = require("method-override");
 require("dotenv").config();
 const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const bcrypt = require("mongoose-bcrypt");
-const defineCurrentUser = require("./middleware/defineCurrentUser");
-const cors = require("cors");
+const defineCurrentUser =require('./middleware/defineCurrentUser')
+const http = require('http')
+const { Server } = require('socket.io')
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,6 +20,42 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 app.use(defineCurrentUser);
+
+
+/** create chat server via socket.io  */
+const server = http.createServer(app)
+const io = new Server({server,
+  cors:{
+    origin:"http://localhost:3000/myjobs",
+    methods: ["GET", "POST"]
+  }
+})
+
+//listen for socket connection
+
+io.on('connection', (socket)=>{
+  console.log(`User Connected: ${socket.id}`)
+
+  //listen for users joining
+  socket.on('join_room', (data)=>{
+    socket.join(data)
+    console.log(`User with socket id: ${socket.id} joined room ${data}`)
+  })
+
+  //listen for messages sent
+  socket.on('send_message', (data)=>{
+    socket.to(data.room).emit('receive_message', data)
+  })
+
+  //listen for disconnect
+  socket.on('disconnect', ()=>{
+    console.log(`User socket ${socket.id} has disconnected`)
+  })
+
+})
+
+//end of webchat socket integration 
+
 
 app.get("/", (req, res) => {
   res.send("running");

@@ -6,17 +6,28 @@ const Account = require("../models/memberAccount");
 const Jobs = require("../models/job");
 
 //returns not completed jobs in the area
+// router.get("/", async (req, res) => {
+//   await Jobs.find({ location: req.body.location, notCompleted: true })
+//     .lean()
+//     .then((jobsFound) => {
+//       res.json(jobsFound);
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.status(404);
+//     });
+// });
+
+
 router.get("/", async (req, res) => {
-  await Jobs.find({ location: req.body.location, notCompleted: true })
-    .lean()
-    .then((jobsFound) => {
-      res.json(jobsFound);
-    })
-    .catch((error) => {
+ try{
+   const jobs =  await Jobs.find()
+     res.json(jobs)
+    } catch(error){
       console.log(error);
       res.status(404);
-    });
-});
+    }
+     });
 
 //returns a job by its id
 router.get("/:id", async (req, res) => {
@@ -29,6 +40,32 @@ router.get("/:id", async (req, res) => {
       res.status(404);
     });
 });
+//show job posted by specific user
+router.get("/postedby/:postedBy", async (req, res) => {
+    await Jobs.find( {postedBy: req.params.postedBy})
+        .lean()
+        .then((foundPoster) => {
+            res.json(foundPoster);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
+});
+
+//show job by category
+router.get("/category/:category", async (req, res) => {
+   const jobs = await Jobs.find( {category: req.params.category})
+        .lean()
+        .then((foundMatching) => {
+            res.json(foundMatching);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
+});
+
 
 //creates a job
 router.post("/", (req, res) => {
