@@ -18,16 +18,15 @@ const Jobs = require("../models/job");
 //     });
 // });
 
-
 router.get("/", async (req, res) => {
- try{
-   const jobs =  await Jobs.find()
-     res.json(jobs)
-    } catch(error){
-      console.log(error);
-      res.status(404);
-    }
-     });
+  try {
+    const jobs = await Jobs.find();
+    res.json(jobs);
+  } catch (error) {
+    console.log(error);
+    res.status(404);
+  }
+});
 
 //returns a job by its id
 router.get("/:id", async (req, res) => {
@@ -45,15 +44,15 @@ router.get("/:id", async (req, res) => {
 
 //show job posted by specific user
 router.get("/postedby/:postedBy", async (req, res) => {
-    await Jobs.find( {postedBy: req.params.postedBy})
-        .lean()
-        .then((foundPoster) => {
-            res.json(foundPoster);
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(404);
-        });
+  await Jobs.find({ postedBy: req.params.postedBy })
+    .lean()
+    .then((foundPoster) => {
+      res.json(foundPoster);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(404);
+    });
 });
 
 //show job by category
@@ -68,7 +67,6 @@ router.get("/category/:category", async (req, res) => {
             res.status(404);
         });
 });
-
 
 //creates a job
 router.post("/", (req, res) => {
