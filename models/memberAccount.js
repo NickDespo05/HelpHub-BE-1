@@ -18,10 +18,10 @@ const validatePassword = (password) => {
 
 const memberAccountSchema = new mongoose.Schema(
   {
-    // name: {
-    //   type: String,
-    //   required: true,
-    // },
+    name: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       lowercase: true,
@@ -39,16 +39,19 @@ const memberAccountSchema = new mongoose.Schema(
       bcrypt: true,
       required: true,
     },
-    // location: {
-    //   type: String,
-    //   required: true,
-    // },
-    // age: {
-    //   type: Number,
-    //   required: true,
-    //   min: 18,
-    //   max: 100,
-    // },
+    location: {
+      type: String,
+      required: true,
+    },
+    age: {
+      type: Number,
+      required: true,
+      min: 18,
+      max: 100,
+    },
+    /**
+     * @TODO : Implement Payments
+     * **/
     // paymentType: {
     //   type: String,
     //   info: {
@@ -57,6 +60,9 @@ const memberAccountSchema = new mongoose.Schema(
     //     required: true,
     //   },
     // },
+    /**
+     * @TODO : Implemented user's history of completed jobs
+     */
     // jobsCompleted: {
     //   type: {
     //     type: Array,
@@ -64,6 +70,9 @@ const memberAccountSchema = new mongoose.Schema(
     //     ref: "job",
     //   },
     // },
+    /**
+     *@TODO : up for deletion
+     **/
     // accountType: {
     //   type: String,
     //   enum: ["consumer", "provider"],
