@@ -69,7 +69,6 @@ router.get("/category/:category", async (req, res) => {
 
 //creates a job
 router.post("/", (req, res) => {
-  console.log(req.body);
   Jobs.create(req.body)
     .then((createdJob) => {
       console.log(createdJob);
