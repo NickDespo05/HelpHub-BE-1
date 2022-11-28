@@ -72,7 +72,7 @@ router.post("/", (req, res) => {
   Jobs.create(req.body)
     .then((createdJob) => {
       console.log(createdJob);
-      res.status(200);
+      res.status(200).json(createdJob);
     })
     .catch((error) => {
       console.log(error);
