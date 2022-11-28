@@ -4,6 +4,7 @@ require("dotenv").config();
 const router = express.Router();
 const Account = require("../models/memberAccount");
 const Jobs = require("../models/job");
+const { create } = require("../models/memberAccount");
 
 //returns not completed jobs in the area
 // router.get("/", async (req, res) => {
@@ -40,8 +41,6 @@ router.get("/:id", async (req, res) => {
     });
 });
 
-
-
 //show job posted by specific user
 router.get("/postedby/:postedBy", async (req, res) => {
   await Jobs.find({ postedBy: req.params.postedBy })
@@ -57,19 +56,20 @@ router.get("/postedby/:postedBy", async (req, res) => {
 
 //show job by category
 router.get("/category/:category", async (req, res) => {
-   await Jobs.find( {category: req.params.category})
-        .lean()
-        .then((foundMatching) => {
-            res.json(foundMatching);
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(404);
-        });
+  await Jobs.find({ category: req.params.category })
+    .lean()
+    .then((foundMatching) => {
+      res.json(foundMatching);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(404);
+    });
 });
 
 //creates a job
 router.post("/", (req, res) => {
+  console.log(req.body);
   Jobs.create(req.body)
     .then((createdJob) => {
       console.log(createdJob);

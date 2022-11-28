@@ -29,6 +29,9 @@ const jobSchema = new mongoose.Schema(
       ref: "memberAccount",
       required: true,
     },
+    description: {
+      type: String,
+    },
     category: {
       type: String,
       enum: ["landscaping", "petCare", "movingHelp", "homeCleaning"],
@@ -48,7 +51,7 @@ const jobSchema = new mongoose.Schema(
     notCompleted: {
       type: Boolean,
       default: true,
-      required: true,
+      // required: true,
     },
   },
   { toJson: { virtuals: true } }
