@@ -86,7 +86,6 @@ router.put("/:id", async (req, res) => {
             console.log(updatedJob);
             res.status(200).json(updatedJob);
         })
-
         .catch((error) => {
             console.log(error);
             res.status(404);
