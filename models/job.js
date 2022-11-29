@@ -48,7 +48,7 @@ const jobSchema = new mongoose.Schema(
             default: true,
             required: true,
         },
-        jobStatus: {
+        status: {
             type: String,
             enum: ["posted", "requested", "in progress", `completed`],
             default: "posted",
