@@ -55,6 +55,19 @@ router.get("/postedby/:postedBy", async (req, res) => {
     });
 });
 
+
+router.get("/provider/:provider", async (req, res) => {
+  await Jobs.find({ provider: req.params.provider })
+    .lean()
+    .then((foundWorker) => {
+      res.json(foundWorker);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(404);
+    });
+});
+
 //show job by category
 router.get("/category/:category", async (req, res) => {
    await Jobs.find( {category: req.params.category})
