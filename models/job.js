@@ -50,6 +50,9 @@ const jobSchema = new mongoose.Schema(
       default: true,
       required: true,
     },
+    chats: {
+      type: Array,
+    }
   },
   { toJson: { virtuals: true } }
 );
