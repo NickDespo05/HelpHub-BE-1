@@ -51,7 +51,7 @@ const jobSchema = new mongoose.Schema(
 
     chats: {
       type: Object,
-    }
+    },
 
     status: {
       type: String,
@@ -63,7 +63,7 @@ const jobSchema = new mongoose.Schema(
       type: Array,
     },
   },
-  
+
   { toJson: { virtuals: true } }
 );
 
