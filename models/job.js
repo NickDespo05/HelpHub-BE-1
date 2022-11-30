@@ -48,6 +48,11 @@ const jobSchema = new mongoose.Schema(
       default: true,
       required: true,
     },
+
+    chats: {
+      type: Object,
+    }
+
     status: {
       type: String,
       enum: ["posted", "in progress", `completed`],
@@ -58,6 +63,7 @@ const jobSchema = new mongoose.Schema(
       type: Array,
     },
   },
+  
   { toJson: { virtuals: true } }
 );
 

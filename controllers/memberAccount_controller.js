@@ -152,16 +152,16 @@ module.exports = router;
 // });
 
 //gets and account by id
-// router.get("/:id", (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     Account.findById(id)
-//       .select("-_id -password")
-//       .then((foundAccount) => {
-//         res.json(foundAccount);
-//       });
-//   } catch (error) {
-//     res.status(500).send(error);
-//     console.log(error);
-//   }
-// });
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+  try {
+    Account.findById(id)
+      .select("-_id -password")
+      .then((foundAccount) => {
+        res.json(foundAccount);
+      });
+  } catch (error) {
+    res.status(500).send(error);
+    console.log(error);
+  }
+});

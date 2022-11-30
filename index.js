@@ -22,7 +22,7 @@ app.use(express.static("public"));
 app.use(defineCurrentUser);
 
 
-/** create chat server via socket.io  */
+/** create chat server via socket.io  
 const server = http.createServer(app)
 const io = new Server({server,
   cors:{
@@ -55,7 +55,7 @@ io.on('connection', (socket)=>{
 })
 
 //end of webchat socket integration 
-
+*/
 
 app.get("/", (req, res) => {
   res.send("running");
@@ -66,6 +66,8 @@ app.use("/memberAccounts", memberAccount_controller);
 
 const job_controller = require("./controllers/job_controller");
 app.use("/jobs", job_controller);
+
+app.use('/chats', require('./controllers/chat_controller'))
 
 // const authentication_controller = require("./controllers/authentication");
 // app.use("/authentication", authentication_controller);
