@@ -44,7 +44,13 @@ router.post("/", (req, res) => {
 
 //updates a chat
 router.put("/:id", (req, res) => {
-  Chats.findOneAndUpdate({ job_id: req.params.id }, req.body)
+  console.log(req.params.message);
+  Chats.findOneAndUpdate(
+    { job_id: req.params.id },
+    //prettier-ignore
+    { $push: { messages: req.body.message } },
+    { new: true }
+  )
     .then((updatedChat) => {
       console.log(updatedChat);
       res.status(200).json(updatedChat);
