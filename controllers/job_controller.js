@@ -84,7 +84,7 @@ router.post("/", (req, res) => {
 router.put("/:id", async (req, res) => {
   await Jobs.findByIdAndUpdate(
     req.params.id,
-    { provider: req.body._id },
+    { provider: req.body._id, status: "in progress" },
     { new: true }
   )
     .then((updatedJob) => {
