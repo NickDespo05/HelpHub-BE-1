@@ -37,23 +37,33 @@ const jobSchema = new mongoose.Schema(
     provider: {
       type: Schema.Types.ObjectID,
       ref: "memberAccount",
+      default: null,
     },
     image: {
       data: Buffer,
       contentType: String,
     },
-    /**
-     * @TODO : possible change name to just "completed"
-     */
     notCompleted: {
       type: Boolean,
       default: true,
       required: true,
     },
+
     chats: {
       type: Object,
     }
+
+    status: {
+      type: String,
+      enum: ["posted", "in progress", `completed`],
+      default: "posted",
+      required: true,
+    },
+    chats: {
+      type: Array,
+    },
   },
+  
   { toJson: { virtuals: true } }
 );
 

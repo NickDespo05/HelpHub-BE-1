@@ -4,6 +4,7 @@ require("dotenv").config();
 const router = express.Router();
 const Account = require("../models/memberAccount");
 const Jobs = require("../models/job");
+const { create } = require("../models/memberAccount");
 
 //returns not completed jobs in the area
 // router.get("/", async (req, res) => {
@@ -40,9 +41,6 @@ router.get("/:id", async (req, res) => {
     });
 });
 
-
-
-
 //show job posted by specific user
 router.get("/postedby/:postedBy", async (req, res) => {
   await Jobs.find({ postedBy: req.params.postedBy })
@@ -55,9 +53,6 @@ router.get("/postedby/:postedBy", async (req, res) => {
       res.status(404);
     });
 });
-
-
-
 
 router.get("/provider/:provider", async (req, res) => {
   await Jobs.find({ provider: req.params.provider })
@@ -73,15 +68,15 @@ router.get("/provider/:provider", async (req, res) => {
 
 //show job by category
 router.get("/category/:category", async (req, res) => {
-   await Jobs.find( {category: req.params.category})
-        .lean()
-        .then((foundMatching) => {
-            res.json(foundMatching);
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(404);
-        });
+  await Jobs.find({ category: req.params.category })
+    .lean()
+    .then((foundMatching) => {
+      res.json(foundMatching);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(404);
+    });
 });
 
 //creates a job
@@ -89,7 +84,7 @@ router.post("/", (req, res) => {
   Jobs.create(req.body)
     .then((createdJob) => {
       console.log(createdJob);
-      res.status(200);
+      res.status(200).json(createdJob);
     })
     .catch((error) => {
       console.log(error);
@@ -98,15 +93,20 @@ router.post("/", (req, res) => {
 });
 
 //updates a job and its info
-router.put("/:id", (req, res) => {
-  Jobs.findByIdAndUpdate(req.params.id)
+router.put("/:id", async (req, res) => {
+  await Jobs.findByIdAndUpdate(
+    req.params.id,
+    { provider: req.body._id, status: "in progress" },
+    { new: true }
+  )
     .then((updatedJob) => {
       console.log(updatedJob);
-      res.status(200);
+      res.status(200).json(updatedJob);
     })
     .catch((error) => {
       console.log(error);
       res.status(404);
+      console.log(req.body);
     });
 });
 
@@ -115,7 +115,7 @@ router.delete("/:id", (req, res) => {
   Jobs.findByIdAndDelete(req.params.id)
     .then((deletedJob) => {
       console.log(deletedJob);
-      res.status(200);
+      res.status(200).json(deletedJob);
     })
     .catch((error) => {
       console.log(error);
