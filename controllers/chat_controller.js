@@ -2,15 +2,14 @@ const express = require("express");
 require("dotenv").config();
 const router = express.Router();
 
-const Chats = require('../models/chat')
-
+const Chats = require("../models/chat");
 
 //returns all chats
 router.get("/", async (req, res) => {
   try {
     const chat = await Chats.find();
     res.json(chat);
-    res.status(200).json()
+    res.status(200).json();
   } catch (error) {
     console.log(error);
     res.status(404);
@@ -19,17 +18,16 @@ router.get("/", async (req, res) => {
 
 //returns a chat by its job id
 router.get("/:id", async (req, res) => {
-  await Chats.find({job_id: req.params.id})
+  await Chats.find({ job_id: req.params.id })
     .then((foundChat) => {
       res.json(foundChat);
-      res.status(200)
+      res.status(200);
     })
     .catch((error) => {
       console.log(error);
       res.status(404);
     });
 });
-
 
 //creates a chat
 router.post("/", (req, res) => {
@@ -46,7 +44,7 @@ router.post("/", (req, res) => {
 
 //updates a chat
 router.put("/:id", (req, res) => {
-  Chats.findOneAndUpdate({job_id: req.params.id}, req.body)
+  Chats.findOneAndUpdate({ job_id: req.params.id }, req.body)
     .then((updatedChat) => {
       console.log(updatedChat);
       res.status(200).json(updatedChat);
