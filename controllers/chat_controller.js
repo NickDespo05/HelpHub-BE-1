@@ -20,7 +20,8 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   await Chats.find({ job_id: req.params.id })
     .then((foundChat) => {
-      res.json(foundChat);
+      console.log(...foundChat);
+      res.json(...foundChat);
       res.status(200);
     })
     .catch((error) => {
@@ -44,11 +45,11 @@ router.post("/", (req, res) => {
 
 //updates a chat
 router.put("/:id", (req, res) => {
-  console.log(req.params.message);
+  console.log(req.body);
   Chats.findOneAndUpdate(
     { job_id: req.params.id },
     //prettier-ignore
-    { $push: { messages: req.body.message } },
+    { $push: { messages: req.body.messages } },
     { new: true }
   )
     .then((updatedChat) => {

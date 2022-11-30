@@ -2,20 +2,24 @@ const mongoose = require("mongoose");
 //const memberAccount = require("./memberAccount");
 const { Schema } = mongoose;
 
+const messageSchema = new mongoose.Schema({
+  author: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: String,
+    required: true,
+  },
+});
+
 const chatSchema = new mongoose.Schema(
   {
-    author: {
-      type: String,
-      required: true,
-    },
-    messages: {
-      type: Array,
-      default: [],
-    },
-    time: {
-      type: String,
-      contentType: String,
-    },
+    messages: [messageSchema],
     job_id: {
       type: Schema.Types.ObjectId,
       ref: "job",
