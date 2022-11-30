@@ -29,9 +29,6 @@ const jobSchema = new mongoose.Schema(
       ref: "memberAccount",
       required: true,
     },
-    description: {
-      type: String,
-    },
     category: {
       type: String,
       enum: ["landscaping", "petCare", "movingHelp", "homeCleaning"],
@@ -40,18 +37,25 @@ const jobSchema = new mongoose.Schema(
     provider: {
       type: Schema.Types.ObjectID,
       ref: "memberAccount",
+      default: null,
     },
     image: {
       data: Buffer,
       contentType: String,
     },
-    /**
-     * @TODO : possible change name to just "completed"
-     */
     notCompleted: {
       type: Boolean,
       default: true,
-      // required: true,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["posted", "in progress", `completed`],
+      default: "posted",
+      required: true,
+    },
+    chats: {
+      type: Array,
     },
   },
   { toJson: { virtuals: true } }
