@@ -81,15 +81,20 @@ router.post("/", (req, res) => {
 });
 
 //updates a job and its info
-router.put("/:id", (req, res) => {
-  Jobs.findByIdAndUpdate(req.params.id)
+router.put("/:id", async (req, res) => {
+  await Jobs.findByIdAndUpdate(
+    req.params.id,
+    { provider: req.body._id },
+    { new: true }
+  )
     .then((updatedJob) => {
       console.log(updatedJob);
-      res.status(200);
+      res.status(200).json(updatedJob);
     })
     .catch((error) => {
       console.log(error);
       res.status(404);
+      console.log(req.body);
     });
 });
 
@@ -98,7 +103,7 @@ router.delete("/:id", (req, res) => {
   Jobs.findByIdAndDelete(req.params.id)
     .then((deletedJob) => {
       console.log(deletedJob);
-      res.status(200);
+      res.status(200).json(deletedJob);
     })
     .catch((error) => {
       console.log(error);
