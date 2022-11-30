@@ -42,6 +42,7 @@ router.get("/:id", async (req, res) => {
 
 
 
+
 //show job posted by specific user
 router.get("/postedby/:postedBy", async (req, res) => {
   await Jobs.find({ postedBy: req.params.postedBy })
@@ -54,6 +55,8 @@ router.get("/postedby/:postedBy", async (req, res) => {
       res.status(404);
     });
 });
+
+
 
 
 router.get("/provider/:provider", async (req, res) => {
