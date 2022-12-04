@@ -13,88 +13,89 @@ const jwt = require("json-web-token");
  */
 
 router.get("/", async (req, res) => {
-  await Account.find({ accountType: "provider", location: req.body.location })
-    .select("-password -_id")
-    .lean()
-    .then((foundAccount) => {
-      res.json(foundAccount);
+    await Account.find({ accountType: "provider", location: req.body.location })
+        .select("-password -_id")
+        .lean()
+        .then((foundAccount) => {
+            res.json(foundAccount);
 
-      res.status(200);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+            res.status(200);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
 });
 
 router.get("/memberAccount", async (req, res) => {
-  res.json(req.currentUser);
+    const data = await req.currentUser;
+    res.json(data);
+    console.log(data);
 });
 
 router.post("/login", async (req, res) => {
-  let user = await Account.findOne({ email: req.body.email });
-  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-    res.status(404).json({
-      message: "Could not find a user with the provided email and/or password",
-    });
-  } else {
-    const result = await jwt.encode(process.env.JWT_SECRET, {
-      id: user._id,
-    });
-    res.json({ user: user, token: result.value });
-  }
+    let user = await Account.findOne({ email: req.body.email });
+    if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+        res.status(404).json({
+            message:
+                "Could not find a user with the provided email and/or password",
+        });
+    } else {
+        const result = await jwt.encode(process.env.JWT_SECRET, {
+            id: user._id,
+        });
+        res.json({ user: user, token: result.value });
+    }
 });
 
 //makes new account with encrypted password
 //documentation used: https://www.npmjs.com/package/mongoose-bcrypt
 router.post("/", (req, res) => {
-  Account.create(req.body, (err, createdAccount) => {
-    console.log(req.body);
-    res.json(createdAccount);
-    console.log(createdAccount);
-    if (!err) {
-      createdAccount.verifyPassword(req.body.password, (err, valid) => {
-        if (err) {
-          console.log(err);
-        } else if (valid) {
-          console.log("valid");
+    Account.create(req.body, (err, createdAccount) => {
+        console.log(req.body);
+        res.json(createdAccount);
+        console.log(createdAccount);
+        if (!err) {
+            createdAccount.verifyPassword(req.body.password, (err, valid) => {
+                if (err) {
+                    console.log(err);
+                } else if (valid) {
+                    console.log("valid");
+                } else {
+                    console.log("invalid");
+                }
+            });
         } else {
-          console.log("invalid");
+            console.log(err);
         }
-      });
-    } else {
-      console.log(err);
-    }
-  });
+    });
 });
 
 //edits account
 router.put("/:id", (req, res) => {
-  try {
-    Account.findByIdAndUpdate(req.params.id, req.body).then(
-      (updatedAccount) => {
-        res.json(updatedAccount);
-      }
-    );
-  } catch (error) {
-    res.status(500).send(error);
-    console.log(error);
-  }
+    try {
+        Account.findByIdAndUpdate(req.params.id, req.body).then(
+            (updatedAccount) => {
+                res.json(updatedAccount);
+            }
+        );
+    } catch (error) {
+        res.status(500).send(error);
+        console.log(error);
+    }
 });
 
 //deletes account
 router.delete("/:id", (req, res) => {
-  try {
-    Account.findByIdAndDelete(req.params.id).then((deletedAccount) => {
-      res.json(deletedAccount);
-    });
-  } catch (error) {
-    res.status(500).json({ message: "delete error" });
-    console.log(error);
-  }
+    try {
+        Account.findByIdAndDelete(req.params.id).then((deletedAccount) => {
+            res.json(deletedAccount);
+        });
+    } catch (error) {
+        res.status(500).json({ message: "delete error" });
+        console.log(error);
+    }
 });
-
-module.exports = router;
 
 //OLD STUFF JUST HERE IN CASE IT ENDS UP BREAKING
 // router.post("/login", async (req, res) => {
@@ -151,17 +152,19 @@ module.exports = router;
 //   }
 // });
 
-//gets and account by id
+//gets an account by id
 router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  try {
-    Account.findById(id)
-      .select("-_id -password")
-      .then((foundAccount) => {
-        res.json(foundAccount);
-      });
-  } catch (error) {
-    res.status(500).send(error);
-    console.log(error);
-  }
+    const id = req.params.id;
+    try {
+        Account.findById(id)
+            .select("-_id -password")
+            .then((foundAccount) => {
+                res.json(foundAccount);
+            });
+    } catch (error) {
+        res.status(500).send(error);
+        console.log(error);
+    }
 });
+
+module.exports = router;

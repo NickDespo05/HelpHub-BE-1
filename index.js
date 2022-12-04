@@ -1,15 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require('cors')
+const cors = require("cors");
 const methodOverride = require("method-override");
 require("dotenv").config();
 const app = express();
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const bcrypt = require("mongoose-bcrypt");
-const defineCurrentUser =require('./middleware/defineCurrentUser')
-const http = require('http')
-const { Server } = require('socket.io')
+const defineCurrentUser = require("./middleware/defineCurrentUser");
+const http = require("http");
+// const io = require("socket.io")(5050);
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,7 +20,6 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 app.use(defineCurrentUser);
-
 
 /** create chat server via socket.io  
 const server = http.createServer(app)
@@ -58,7 +57,7 @@ io.on('connection', (socket)=>{
 */
 
 app.get("/", (req, res) => {
-  res.send("running");
+    res.send("running");
 });
 
 const memberAccount_controller = require("./controllers/memberAccount_controller");
@@ -67,19 +66,23 @@ app.use("/memberAccounts", memberAccount_controller);
 const job_controller = require("./controllers/job_controller");
 app.use("/jobs", job_controller);
 
-app.use('/chats', require('./controllers/chat_controller'))
+app.use("/chats", require("./controllers/chat_controller"));
 
 // const authentication_controller = require("./controllers/authentication");
 // app.use("/authentication", authentication_controller);
 
+// io.on("connection", (socket) => {
+//     socket.emit("chat-message", "Hello world");
+// });
+
 app.listen(process.env.PORT, () => {
-  console.log(`connected at port ${process.env.PORT}`);
+    console.log(`connected at port ${process.env.PORT}`);
 });
 
 mongoose.connect(
-  process.env.MONGO_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("connected to mongo");
-  }
+    process.env.MONGO_URI,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => {
+        console.log("connected to mongo");
+    }
 );
