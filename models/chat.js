@@ -20,10 +20,7 @@ const messageSchema = new mongoose.Schema({
 const chatSchema = new mongoose.Schema(
     {
         messages: [messageSchema],
-        job_id: {
-            type: Schema.Types.ObjectId,
-            ref: "job",
-        },
+
         consumer: {
             type: Schema.Types.ObjectId,
             ref: "memberAccount",
@@ -39,7 +36,7 @@ const chatSchema = new mongoose.Schema(
 chatSchema.virtual("memberAccount", {
     ref: "memberAccount",
     localField: "_id",
-    foreignField: "job",
+    foreignField: "chat",
 });
 
 const chat = mongoose.model("chats", chatSchema);

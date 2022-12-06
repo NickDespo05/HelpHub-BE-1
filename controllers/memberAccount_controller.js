@@ -40,11 +40,13 @@ router.post("/login", async (req, res) => {
             message:
                 "Could not find a user with the provided email and/or password",
         });
+        console.log(req.body);
     } else {
         const result = await jwt.encode(process.env.JWT_SECRET, {
             id: user._id,
         });
         res.json({ user: user, token: result.value });
+        console.log(req.body);
     }
 });
 
