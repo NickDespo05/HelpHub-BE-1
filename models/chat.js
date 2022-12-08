@@ -12,20 +12,21 @@ const messageSchema = new mongoose.Schema({
         required: true,
     },
     time: {
-        type: String,
-        required: true,
+        type: Date,
+        default: Date.now,
     },
 });
 
 const chatSchema = new mongoose.Schema(
     {
-        messages: [messageSchema],
+        messages: {
+            type: [messageSchema],
 
-        consumer: {
-            type: Schema.Types.ObjectId,
-            ref: "memberAccount",
+            default: [],
         },
-        provider: {
+
+        bothParties: {
+            type: [Schema.Types.ObjectId],
             type: Schema.Types.ObjectId,
             ref: "memberAccount",
         },

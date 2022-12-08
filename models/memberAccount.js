@@ -80,7 +80,7 @@ const memberAccountSchema = new mongoose.Schema(
         //   enum: ["consumer", "provider"],
         // },
         chats: {
-            type: [],
+            type: [Schema.Types.ObjectID],
             type: Schema.Types.ObjectID,
             ref: "chat",
         },

@@ -43,19 +43,11 @@ const jobSchema = new mongoose.Schema(
             data: Buffer,
             contentType: String,
         },
-
-        chats: {
-            type: Object,
-        },
-
         status: {
             type: String,
             enum: ["posted", "in progress", `completed`],
             default: "posted",
             required: true,
-        },
-        chats: {
-            type: Array,
         },
     },
 
