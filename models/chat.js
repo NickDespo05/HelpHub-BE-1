@@ -27,7 +27,7 @@ const chatSchema = new mongoose.Schema(
 
         bothParties: {
             type: [Schema.Types.ObjectId],
-            type: Schema.Types.ObjectId,
+
             ref: "memberAccount",
         },
     },

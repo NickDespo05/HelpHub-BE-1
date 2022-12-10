@@ -9,7 +9,7 @@ router.get("/account/:id", async (req, res) => {
     try {
         const chat = await Chats.find({ bothMembers: [req.params.id] });
         res.json(chat);
-        res.status(200).json();
+        res.status(200);
         console.log(chat);
     } catch (error) {
         console.log(error);
