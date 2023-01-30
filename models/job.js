@@ -16,10 +16,6 @@ const geoSchema = new mongoose.Schema({
 
 const jobSchema = new mongoose.Schema(
     {
-        name: {
-            type: String,
-            required: true,
-        },
         location: {
             type: String,
             required: true,
@@ -47,18 +43,11 @@ const jobSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        chats: {
-            type: Object,
-        },
-
         status: {
             type: String,
             enum: ["posted", "in progress", `completed`],
             default: "posted",
             required: true,
-        },
-        chats: {
-            type: Array,
         },
     },
 
