@@ -69,6 +69,9 @@ app.use("/jobs", job_controller);
 
 app.use('/chats', require('./controllers/chat_controller'))
 
+const search_controller = require("./controllers/search_controller")
+app.use("/search", search_controller)
+
 // const authentication_controller = require("./controllers/authentication");
 // app.use("/authentication", authentication_controller);
 

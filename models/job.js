@@ -17,7 +17,7 @@ const geoSchema = new mongoose.Schema({
 const jobSchema = new mongoose.Schema(
     {
         location: {
-            type: String,
+            type: Array,
             required: true,
         },
         postedBy: {
