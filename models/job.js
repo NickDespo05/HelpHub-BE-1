@@ -3,16 +3,25 @@ const memberAccount = require("./memberAccount");
 const { Schema } = mongoose;
 
 //creates geoJson location shcema
-const geoSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        default: "point",
-    },
-    coordinates: {
-        type: [Number],
-        index: "2dsphere",
-    },
-});
+// const geoSchema = new mongoose.Schema({
+//     type: {
+//         type: String,
+//         default: "point",
+//     },
+//     coordinates: {
+//         type: [Number],
+//         index: "2dsphere",
+//     },
+// });
+
+const checkPrice = (price) => {
+    const num = Number(price);
+    if (num < 20) {
+        return false;
+    } else {
+        return true;
+    }
+};
 
 const jobSchema = new mongoose.Schema(
     {
@@ -76,19 +85,24 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
         postedBy: {
-            type: Schema.Types.ObjectID,
+            type: Schema.Types.ObjectId,
             ref: "memberAccount",
             required: true,
         },
         category: {
             type: String,
-            enum: ["landscaping", "petCare", "movingHelp", "homeCleaning"],
+            enum: [
+                "landscaping",
+                "petCare",
+                "movingHelp",
+                "homeCleaning",
+                "miscellaneous",
+            ],
             required: true,
         },
         provider: {
             type: Schema.Types.ObjectID,
             ref: "memberAccount",
-            default: null,
         },
         image: {
             data: Buffer,
@@ -103,6 +117,17 @@ const jobSchema = new mongoose.Schema(
             enum: ["posted", "in progress", `completed`],
             default: "posted",
             required: true,
+        },
+        price: {
+            type: String,
+            default: "$20",
+            validate: [checkPrice, "Price must be above $20"],
+            required: true,
+        },
+        requests: {
+            type: { type: Array, type: Schema.Types.ObjectID, ref: "job" },
+            default: [],
+            // required: true
         },
     },
 

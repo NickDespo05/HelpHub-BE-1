@@ -27,8 +27,10 @@ router.get("/", async (req, res) => {
         });
 });
 
-router.get("/memberAccount", async (req, res) => {
+router.get("/memberAccount", (req, res) => {
     res.json(req.currentUser);
+    console.log("This is where its going");
+    console.log(req.currentUser);
 });
 
 router.post("/login", async (req, res) => {
@@ -83,6 +85,42 @@ router.put("/:id", (req, res) => {
     }
 });
 
+//https://medium.com/stackfame/how-to-push-or-pop-items-into-mongodb-document-array-via-mongoose-in-node-js-express-js-91b7bbd0d218
+router.put("/addJob/:id", async (req, res) => {
+    Account.updateOne(
+        { _id: req.params.id },
+        {
+            $push: { postedJobs: req.body.completedJob },
+        }
+    )
+        .then((updatedAccount) => {
+            console.log("job added route \n");
+            res.json(updatedAccount);
+            console.log(updatedAccount);
+        })
+        .catch((error) => {
+            console.log(error, "Here at 100");
+            res.json(error);
+        });
+});
+
+router.put("/completeJob/:id", async (req, res) => {
+    Account.findByIdAndUpdate(
+        req.params.id,
+        {
+            $push: { jobsCompleted: req.body.completedJob },
+        }
+        // { safe: true, upsert: true }
+    )
+        .then((updatedAccount) => {
+            res.json(updatedAccount);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.json(error);
+        });
+});
+
 //deletes account
 router.delete("/:id", (req, res) => {
     try {
@@ -94,8 +132,6 @@ router.delete("/:id", (req, res) => {
         console.log(error);
     }
 });
-
-module.exports = router;
 
 //OLD STUFF JUST HERE IN CASE IT ENDS UP BREAKING
 // router.post("/login", async (req, res) => {
@@ -166,3 +202,5 @@ router.get("/:id", (req, res) => {
         console.log(error);
     }
 });
+
+module.exports = router;

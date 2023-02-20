@@ -65,18 +65,23 @@ const memberAccountSchema = new mongoose.Schema(
         /**
          * @TODO : Implemented user's history of completed jobs
          */
-        jobsCompleted: {
-          type: {
-            type: Array,
-            type: Schema.Types.ObjectID,
-            ref: "job",
-            },
-            default: []
+        postedJobs: {
+            type: { type: Array, type: Schema.Types.ObjectID, ref: "job" },
+            default: [],
         },
-        
+        jobsCompleted: {
+            type: {
+                type: Array,
+                type: Schema.Types.ObjectID,
+                ref: "job",
+            },
+            default: [],
+        },
+
         accountType: {
             type: String,
             enum: ["consumer", "provider"],
+            required: true,
         },
         dateCreated: {
             type: String,

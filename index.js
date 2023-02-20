@@ -10,11 +10,12 @@ const bcrypt = require("mongoose-bcrypt");
 const defineCurrentUser =require('./middleware/defineCurrentUser')
 const http = require('http')
 const { Server } = require('socket.io')
+const compression = require("compression")
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(compression())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());

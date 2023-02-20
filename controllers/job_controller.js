@@ -20,107 +20,124 @@ const { create } = require("../models/memberAccount");
 // });
 
 router.get("/", async (req, res) => {
-  try {
-    const jobs = await Jobs.find();
-    res.json(jobs);
-  } catch (error) {
-    console.log(error);
-    res.status(404);
-  }
+    try {
+        const jobs = await Jobs.find();
+        res.json(jobs);
+    } catch (error) {
+        console.log(error);
+        res.status(404);
+    }
 });
 
 //returns a job by its id
 router.get("/:id", async (req, res) => {
-  await Jobs.findById(req.params.id)
-    .then((foundJobs) => {
-      res.json(foundJobs);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+    await Jobs.findById(req.params.id)
+        .then((foundJobs) => {
+            res.json(foundJobs);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
 });
 
 //show job posted by specific user
 router.get("/postedby/:postedBy", async (req, res) => {
-  await Jobs.find({ postedBy: req.params.postedBy })
-    .lean()
-    .then((foundPoster) => {
-      res.json(foundPoster);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+    await Jobs.find({ postedBy: req.params.postedBy })
+        .lean()
+        .then((foundPoster) => {
+            res.json(foundPoster);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
 });
 
 router.get("/provider/:provider", async (req, res) => {
-  await Jobs.find({ provider: req.params.provider })
-    .lean()
-    .then((foundWorker) => {
-      res.json(foundWorker);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+    await Jobs.find({ provider: req.params.provider })
+        .lean()
+        .then((foundWorker) => {
+            res.json(foundWorker);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
 });
 
 //show job by category
 router.get("/category/:category", async (req, res) => {
-  await Jobs.find({ category: req.params.category })
-    .lean()
-    .then((foundMatching) => {
-      res.json(foundMatching);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+    await Jobs.find({ category: req.params.category })
+        .lean()
+        .then((foundMatching) => {
+            res.json(foundMatching);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
 });
 
 //creates a job
 router.post("/", (req, res) => {
-  Jobs.create(req.body)
-    .then((createdJob) => {
-      console.log(createdJob);
-      res.status(200).json(createdJob);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+    Jobs.create(req.body)
+        .then((createdJob) => {
+            console.log(createdJob);
+            res.status(200).json(createdJob);
+        })
+        .catch((error) => {
+            console.log("error job Post \n");
+            console.log(req.body);
+            console.log(error);
+            res.status(404).json(error);
+        });
 });
 
 //updates a job and its info
 router.put("/:id", async (req, res) => {
-  await Jobs.findByIdAndUpdate(
-    req.params.id,
-    { provider: req.body._id, status: "in progress" },
-    { new: true }
-  )
-    .then((updatedJob) => {
-      console.log(updatedJob);
-      res.status(200).json(updatedJob);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-      console.log(req.body);
-    });
+    if (req.body.providerId != undefined && req.body.providerId != null) {
+        Jobs.updateOne(
+            { _id: req.params.id },
+            {
+                $push: { requests: req.body.providerId },
+            }
+        )
+            .then((updatedJob) => {
+                console.log("107");
+                res.json(updatedJob);
+                console.log(updatedJob);
+            })
+            .catch((error) => {
+                console.log(error, "Here at 100");
+                console.log(req.body);
+                res.json(error);
+            });
+    } else {
+        Jobs.findByIdAndUpdate(req.params.id, req.body)
+            .then((updatedJob) => {
+                res.json(updatedJob);
+                console.log(updatedJob);
+            })
+            .catch((error) => {
+                res.json(error);
+                res.status(400);
+                console.log(error);
+            });
+    }
 });
 
 //deletes a job
 router.delete("/:id", (req, res) => {
-  Jobs.findByIdAndDelete(req.params.id)
-    .then((deletedJob) => {
-      console.log(deletedJob);
-      res.status(200).json(deletedJob);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(404);
-    });
+    Jobs.findByIdAndDelete(req.params.id)
+        .then((deletedJob) => {
+            console.log(deletedJob);
+            res.status(200).json(deletedJob);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(404);
+        });
 });
 
 module.exports = router;
