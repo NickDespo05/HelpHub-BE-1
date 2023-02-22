@@ -71,17 +71,35 @@ router.post("/", (req, res) => {
     });
 });
 
-//edits account
-router.put("/:id", (req, res) => {
-    try {
-        Account.findByIdAndUpdate(req.params.id, req.body).then(
-            (updatedAccount) => {
+//edits account, first checks the password if it is correct
+router.put("/:id", async (req, res) => {
+    let user = await Account.findOne({ email: req.body.email });
+    if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+        res.status(404).json({
+            message: "Entered old password is incorrect",
+        });
+    } else {
+        Account.findByIdAndUpdate(req.params.id, req.body)
+            .then((updatedAccount) => {
                 res.json(updatedAccount);
-            }
-        );
-    } catch (error) {
-        res.status(500).send(error);
-        console.log(error);
+                console.log(updatedAccount, " 85");
+            })
+            .catch((error) => {
+                console.log(error);
+                res.json(error);
+                res.status(404);
+            });
+        if (req.body.newPassword) {
+            Account.findByIdAndUpdate(req.params.id, {
+                password: req.body.newPassword,
+            })
+                .then((newPassword) => {
+                    console.log(newPassword);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }
 });
 
@@ -118,6 +136,23 @@ router.put("/completeJob/:id", async (req, res) => {
         .catch((error) => {
             console.log(error);
             res.json(error);
+        });
+});
+
+router.put("/addRequest/:id", async (req, res) => {
+    await Account.updateOne(
+        { _id: req.params.id },
+        { $push: { requests: req.body.jobRequest } }
+    )
+        .then((updatedAccount) => {
+            console.log(updatedAccount, " 142");
+            res.json(updatedAccount);
+            res.status(200);
+        })
+        .catch((err) => {
+            res.json(err);
+            console.log(err);
+            res.status(404);
         });
 });
 

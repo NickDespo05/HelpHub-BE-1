@@ -88,6 +88,14 @@ const memberAccountSchema = new mongoose.Schema(
             default: new Date().toLocaleDateString(),
             required: true,
         },
+        requests: {
+            type: {
+                type: Array,
+                type: Schema.Types.ObjectID,
+                ref: "job",
+            },
+            default: [],
+        },
     },
     { toJson: { virtuals: true } }
 );
