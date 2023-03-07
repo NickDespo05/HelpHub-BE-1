@@ -1,0 +1,117 @@
+
+//Member account controller
+//OLD STUFF JUST HERE IN CASE IT ENDS UP BREAKING
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     if (!(email && password)) {
+//       res.status(400).send("All input is required");
+//     }
+
+//     const user = await Account.findOne({ email });
+
+//     if (user && (await bcrypt.compare(password, user.password))) {
+//       const token = jwt.sign(
+//         { user_id: user._id, email },
+//         process.env.JWT_SECRET,
+//         { expiresIn: "2h" }
+//       );
+
+//       user.token = token;
+
+//       res.status(200).json(user);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+//route for login of user with the response being a json object excluding the id and password
+//code pulled from: https://www.codegrepper.com/code-examples/javascript/mongoose+exclude+field+from+..find
+// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+// router.post("/login", async (req, res) => {
+//   try {
+//     Account.findOne({ email: req.body.email }, (err, foundAccount) => {
+//       if (err) {
+//         console.log(req.body);
+//         throw err;
+//       }
+
+//       foundAccount.comparePassword(req.body.password, (err, isMatch) => {
+//         if (err) throw err;
+//         else if (isMatch == true) {
+//           Account.findOne({ email: req.body.email })
+//             .select("-password -_id")
+//             .then((foundAccount) => {
+//               res.json({ foundAccount });
+//             });
+//         } else {
+//           res.status(404);
+//         }
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+
+// PUT REMOVE REQUESTS ROUTE: 
+ // Account.updateOne(
+    //     { _id: req.params.id },
+    //     { $pull: { requests: req.body.job } }
+    // )
+    //     .then((updatedAccount) => {
+    //         console.log(updatedAccount);
+    //         res.status(200).json(updatedAccount);
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //         res.status(404).json(err);
+    //     });
+    // Jobs.updateOne(
+    //     { _id: req.params.id2 },
+    //     { $pull: { requests: req.body.accountId } }
+    // )
+    //     .then((updatedJob) => {
+    //         console.log(updatedJob);
+    //         res.status(200).json(updatedJob);
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //         res.status(404).json(err);
+    //     });
+
+
+
+//GET REQUESTS ROUTE MEMBERACCOUNT CONTROLLER: 
+// const jobs = [];
+    // console.log(requests[2]);
+    // try {
+    //     vjob = await Jobs.find(requests).forEach((req, i) => {
+
+    //     });
+    //     console.log(job, "Yo");
+    //     jobs.push(job);
+    // } catch (err) {
+    //     console.log(err);
+    // }
+    // console.log(jobs);
+    // res.status(200).json(jobs);
+
+
+MEMBERACCOUNT SCHEMA PAYMENT INFO: 
+ /**
+         * @TODO : Implement Payments
+         * **/
+        // paymentType: {
+        //   type: String,
+        //   info: {
+        //     // ref: "paymentInfo",
+        //     enum: ["debitCard", "creditCard", "payPal", "Venmo"],
+        //     required: true,
+        //   },
+        // },
+        /**
+         * @TODO : Implemented user's history of completed jobs
+         */

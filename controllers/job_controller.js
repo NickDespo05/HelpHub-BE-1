@@ -31,14 +31,23 @@ router.get("/", async (req, res) => {
 
 //returns a job by its id
 router.get("/:id", async (req, res) => {
-    await Jobs.findById(req.params.id)
-        .then((foundJobs) => {
-            res.json(foundJobs);
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(404);
-        });
+    try {
+        console.log(req.params.id)
+        const job = await Jobs.findById(req.params.id);
+        res.status(200).json(job);
+    } catch (err) {
+        res.status(404).json(err);
+    }
+
+    // .then((foundJobs) => {
+    //     res.json(foundJobs);
+    //     console.log(foundJobs, " 37");
+    // })
+    // .catch((error) => {
+    //     console.log(error);
+    //     res.json(error);
+    //     res.status(404);
+    // });
 });
 
 //show job posted by specific user

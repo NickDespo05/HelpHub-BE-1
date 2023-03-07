@@ -51,23 +51,9 @@ const memberAccountSchema = new mongoose.Schema(
             min: 18,
             max: 100,
         },
-        /**
-         * @TODO : Implement Payments
-         * **/
-        // paymentType: {
-        //   type: String,
-        //   info: {
-        //     // ref: "paymentInfo",
-        //     enum: ["debitCard", "creditCard", "payPal", "Venmo"],
-        //     required: true,
-        //   },
-        // },
-        /**
-         * @TODO : Implemented user's history of completed jobs
-         */
+
         postedJobs: {
             type: { type: Array, type: Schema.Types.ObjectID, ref: "job" },
-            default: [],
         },
         jobsCompleted: {
             type: {
@@ -75,7 +61,6 @@ const memberAccountSchema = new mongoose.Schema(
                 type: Schema.Types.ObjectID,
                 ref: "job",
             },
-            default: [],
         },
 
         accountType: {
@@ -91,11 +76,20 @@ const memberAccountSchema = new mongoose.Schema(
         requests: {
             type: {
                 type: Array,
-                type: Schema.Types.ObjectID,
+                type: Schema.Types.ObjectId,
                 ref: "job",
             },
-            default: [],
         },
+
+        accountStatus: {
+            type: String,
+            enum: ["working", "not"],
+        },
+        currentJob: {
+            type: Schema.Types.ObjectId,
+            type: String, 
+            ref: "job"
+        }
     },
     { toJson: { virtuals: true } }
 );
