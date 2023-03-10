@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
 //returns a job by its id
 router.get("/:id", async (req, res) => {
     try {
-        console.log(req.params.id)
+        console.log(req.params.id);
         const job = await Jobs.findById(req.params.id);
         res.status(200).json(job);
     } catch (err) {
@@ -134,6 +134,18 @@ router.put("/:id", async (req, res) => {
                 console.log(error);
             });
     }
+});
+
+router.get("/requests/:id", async (req, res) => {
+    Jobs.findById(req.params.id)
+        .then((foundJob) => {
+            res.status(200).json(foundJob.requests);
+            console.log(foundJob.requests);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.json(err);
+        });
 });
 
 //deletes a job

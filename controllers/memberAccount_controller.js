@@ -239,6 +239,26 @@ router.put("/removeRequest/:id/:id2", async (req, res) => {
     }
 });
 
+router.put("/removeJob/:id", async (req, res) => {
+    try {
+        const acc = await Account.findById(req.params.id);
+        const account = await Account.updateOne(
+            { _id: req.params.id },
+            {
+                $pull: {
+                    postedJobs: req.body.job,
+                },
+            }
+        );
+        console.log(acc, req.body);
+        res.status(200).json(account);
+        console.log(account, "err");
+    } catch (err) {
+        console.log(err, " err");
+        res.status(404).json(err);
+    }
+});
+
 //deletes account
 router.delete("/:id", (req, res) => {
     try {
