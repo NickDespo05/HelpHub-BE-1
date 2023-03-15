@@ -32,8 +32,9 @@ router.get("/", async (req, res) => {
 //returns a job by its id
 router.get("/:id", async (req, res) => {
     try {
-        console.log(req.params.id);
+        console.log(req.params.id, " 35");
         const job = await Jobs.findById(req.params.id);
+        console.log(job);
         res.status(200).json(job);
     } catch (err) {
         res.status(404).json(err);
@@ -108,9 +109,7 @@ router.put("/:id", async (req, res) => {
     if (req.body.providerId != undefined && req.body.providerId != null) {
         Jobs.updateOne(
             { _id: req.params.id },
-            {
-                $push: { requests: req.body.providerId },
-            }
+            { providerId: req.params.providerId, status: "in progress" }
         )
             .then((updatedJob) => {
                 console.log("107");

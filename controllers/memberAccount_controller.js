@@ -28,6 +28,20 @@ router.get("/memberAccount", (req, res) => {
     console.log(req.currentUser);
 });
 
+router.put("/setCurrentJob/:id", async (req, res) => {
+    await Account.findByIdAndUpdate(req.params.id, {
+        currentJob: req.body.currentJob,
+    })
+        .then((updatedAccount) => {
+            console.log(updatedAccount, "   f;hjdf;aklshf");
+            res.status(200).json(updatedAccount);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(404).json(err);
+        });
+});
+
 router.get("/getRequests/:id", async (req, res) => {
     const account = await Account.findById(req.params.id);
     const reqs = account.requests;
@@ -274,15 +288,21 @@ router.delete("/:id", (req, res) => {
 //gets and account by id
 router.get("/:id", (req, res) => {
     const id = req.params.id;
-    try {
-        Account.findById(id)
-            .select("-_id -password")
-            .then((foundAccount) => {
-                res.json(foundAccount);
-            });
-    } catch (error) {
-        res.status(500).send(error);
-        console.log(error);
+    if (id != "undefined" && id != undefined) {
+        try {
+            Account.find({ _id: req.params.id })
+                // .select("-_id -password")
+                .then((foundAccount) => {
+                    console.log(req.body);
+                    res.json(foundAccount);
+                    console.log(foundAccount);
+                });
+        } catch (error) {
+            res.status(500).json(error);
+            console.log(error);
+        }
+    } else {
+        console.log(req.body);
     }
 });
 

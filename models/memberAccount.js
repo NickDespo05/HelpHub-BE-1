@@ -73,13 +73,6 @@ const memberAccountSchema = new mongoose.Schema(
             default: new Date().toLocaleDateString(),
             required: true,
         },
-        requests: {
-            type: {
-                type: Array,
-                type: Schema.Types.ObjectId,
-                ref: "job",
-            },
-        },
 
         accountStatus: {
             type: String,
@@ -87,9 +80,9 @@ const memberAccountSchema = new mongoose.Schema(
         },
         currentJob: {
             type: Schema.Types.ObjectId,
-            type: String, 
-            ref: "job"
-        }
+            type: String,
+            ref: "job",
+        },
     },
     { toJson: { virtuals: true } }
 );

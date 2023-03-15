@@ -2,18 +2,6 @@ const mongoose = require("mongoose");
 const memberAccount = require("./memberAccount");
 const { Schema } = mongoose;
 
-//creates geoJson location shcema
-// const geoSchema = new mongoose.Schema({
-//     type: {
-//         type: String,
-//         default: "point",
-//     },
-//     coordinates: {
-//         type: [Number],
-//         index: "2dsphere",
-//     },
-// });
-
 const checkPrice = (price) => {
     const num = Number(price);
     if (num < 20) {
@@ -123,11 +111,6 @@ const jobSchema = new mongoose.Schema(
             default: "$20",
             validate: [checkPrice, "Price must be above $20"],
             required: true,
-        },
-        requests: {
-            type: { type: Array, type: Schema.Types.ObjectID, ref: "job" },
-            default: [],
-            // required: true
         },
     },
 
