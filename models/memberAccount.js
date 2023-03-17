@@ -74,10 +74,6 @@ const memberAccountSchema = new mongoose.Schema(
             required: true,
         },
 
-        accountStatus: {
-            type: String,
-            enum: ["working", "not"],
-        },
         currentJob: {
             type: Schema.Types.ObjectId,
             type: String,

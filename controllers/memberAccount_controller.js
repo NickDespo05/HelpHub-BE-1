@@ -33,7 +33,7 @@ router.put("/setCurrentJob/:id", async (req, res) => {
         currentJob: req.body.currentJob,
     })
         .then((updatedAccount) => {
-            console.log(updatedAccount, "   f;hjdf;aklshf");
+            console.log(req.body, "   f;hjdf;aklshf");
             res.status(200).json(updatedAccount);
         })
         .catch((err) => {
@@ -235,21 +235,32 @@ router.put("/addRequest/:id", async (req, res) => {
         });
 });
 
-router.put("/removeRequest/:id/:id2", async (req, res) => {
+router.put("/cancelJob/:id/:id2", async (req, res) => {
     try {
-        const updatedJob = await Jobs.updateOne(
+        console.log(req.params.id2);
+        await Jobs.updateOne(
             { _id: req.params.id2 },
-            { $pull: { requests: req.body.accountId } }
-        );
-
+            {
+                provider: "",
+                status: "posted",
+            }
+        )
+            .then((job) => console.log(job, "job"))
+            .catch((err) => console.log(err));
         const updatedAccount = await Account.updateOne(
             { _id: req.params.id },
-            { $pull: { requests: req.body.job } }
-        );
-
-        res.status(200).json({ account: updatedAccount, job: updatedJob });
+            {
+                currentJob: "",
+                status: "not"
+            }
+        )
+            .then((account) => console.log(account, "account"))
+            .catch((err) => console.log(err));
+        console.log(req.params.id, "258");
+        res.status(200).json(updatedAccount);
     } catch (err) {
-        res.status(404).json(err);
+        console.log(err);
+        res.status(400).json(err);
     }
 });
 

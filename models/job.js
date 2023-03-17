@@ -89,8 +89,7 @@ const jobSchema = new mongoose.Schema(
             required: true,
         },
         provider: {
-            type: Schema.Types.ObjectID,
-            ref: "memberAccount",
+            type: String,
         },
         image: {
             data: Buffer,

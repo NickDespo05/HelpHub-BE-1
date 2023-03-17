@@ -106,13 +106,13 @@ router.post("/", (req, res) => {
 
 //updates a job and its info
 router.put("/:id", async (req, res) => {
-    if (req.body.providerId != undefined && req.body.providerId != null) {
+    if (req.body.providerId) {
         Jobs.updateOne(
             { _id: req.params.id },
-            { providerId: req.params.providerId, status: "in progress" }
+            { provider: req.body.providerId, status: "in progress" }
         )
             .then((updatedJob) => {
-                console.log("107");
+                console.log(req.body, "107");
                 res.json(updatedJob);
                 console.log(updatedJob);
             })
@@ -124,6 +124,7 @@ router.put("/:id", async (req, res) => {
     } else {
         Jobs.findByIdAndUpdate(req.params.id, req.body)
             .then((updatedJob) => {
+                console.log("127");
                 res.json(updatedJob);
                 console.log(updatedJob);
             })
