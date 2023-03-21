@@ -70,7 +70,7 @@ const memberAccountSchema = new mongoose.Schema(
         },
         dateCreated: {
             type: String,
-            default: new Date().toLocaleDateString(),
+            default: Date(Date.now()).toString(),
             required: true,
         },
 

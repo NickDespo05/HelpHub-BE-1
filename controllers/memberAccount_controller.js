@@ -243,6 +243,9 @@ router.put("/cancelJob/:id/:id2", async (req, res) => {
             {
                 provider: "",
                 status: "posted",
+                // $pull: {
+                //     times: times:[1]
+                // }
             }
         )
             .then((job) => console.log(job, "job"))
@@ -251,7 +254,7 @@ router.put("/cancelJob/:id/:id2", async (req, res) => {
             { _id: req.params.id },
             {
                 currentJob: "",
-                status: "not"
+                status: "not",
             }
         )
             .then((account) => console.log(account, "account"))

@@ -101,7 +101,7 @@ const jobSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["posted", "in progress", `completed`],
+            enum: ["posted", "on way", "arrived", "in progress", `completed`],
             default: "posted",
             required: true,
         },
@@ -109,6 +109,11 @@ const jobSchema = new mongoose.Schema(
             type: String,
             default: "$20",
             validate: [checkPrice, "Price must be above $20"],
+            required: true,
+        },
+        times: {
+            type: [String],
+            default: [Date(Date.now()).toString()],
             required: true,
         },
     },

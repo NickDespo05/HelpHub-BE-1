@@ -109,7 +109,7 @@ router.put("/:id", async (req, res) => {
     if (req.body.providerId) {
         Jobs.updateOne(
             { _id: req.params.id },
-            { provider: req.body.providerId, status: "in progress" }
+            { provider: req.body.providerId, status: "on way" }
         )
             .then((updatedJob) => {
                 console.log(req.body, "107");
@@ -118,6 +118,26 @@ router.put("/:id", async (req, res) => {
             })
             .catch((error) => {
                 console.log(error, "Here at 100");
+                console.log(req.body);
+                res.json(error);
+            });
+    } else if (req.body.status) {
+        Jobs.updateOne(
+            { _id: req.params.id },
+            {
+                $push: {
+                    times: Date(Date.now()).toString(),
+                },
+                status: req.body.status,
+            }
+        )
+            .then((updatedJob) => {
+                console.log(req.body, "135");
+                res.json(updatedJob);
+                console.log(updatedJob);
+            })
+            .catch((error) => {
+                console.log(error, "Here at 140");
                 console.log(req.body);
                 res.json(error);
             });
