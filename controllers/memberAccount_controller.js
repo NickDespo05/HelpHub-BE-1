@@ -287,6 +287,35 @@ router.put("/removeJob/:id", async (req, res) => {
     }
 });
 
+router.put("/completeJob/:id/:id2", async (req, res) => {
+    await Account.updateOne(
+        { _id: req.params.id },
+        {
+            $push: {
+                jobsCompleted: req.body.job,
+            },
+            currentJob: "",
+        }
+    ).then((account) => {
+        console.log(account, " 300");
+    });
+    await Account.updateOne(
+        { _id: req.params.id2 },
+        {
+            $push: {
+                jobsCompleted: req.body.job,
+            },
+        }
+    ).then((account) => {
+        console.log(account, " 310");
+    });
+    await Jobs.findByIdAndUpdate(req.body.job, {
+        status: "completed",
+    }).then((job) => console.log(job, "314"));
+
+    res.status(200).json({ message: "job completed" });
+});
+
 //deletes account
 router.delete("/:id", (req, res) => {
     try {
