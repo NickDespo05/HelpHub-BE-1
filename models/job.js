@@ -107,7 +107,7 @@ const jobSchema = new mongoose.Schema(
         },
         price: {
             type: String,
-            default: "$20",
+            default: "20.00",
             validate: [checkPrice, "Price must be above $20"],
             required: true,
         },
