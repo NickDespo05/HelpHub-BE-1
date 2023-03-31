@@ -11,6 +11,7 @@ const defineCurrentUser = require("./middleware/defineCurrentUser");
 const http = require("http");
 const { Server } = require("socket.io");
 const compression = require("compression");
+const Order = require("./models/paypalOrders");
 
 //the code below came from: https://stackoverflow.com/questions/9177049/express-js-req-body-undefined?answertab=modifieddesc#tab-top
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,23 +41,14 @@ app.use("/search", search_controller);
 // const authentication_controller = require("./controllers/authentication");
 // app.use("/authentication", authentication_controller);
 
-app.post("/my-server/create-paypal-order", async (req, res) => {
+app.post("/logPayPalInfo", async (req, res) => {
     try {
-        const order = await paypal.createOrder();
+        Order.create(req.body.order).then((order) => {
+            console.log(order);
+        });
         res.json(order);
     } catch (err) {
         res.status(500).send(err.message);
-    }
-});
-
-app.post("/my-server/capture-paypal-order", async (req, res) => {
-    const { orderID } = req.body;
-    try {
-        const captureData = await paypal.capturePayment(orderID);
-        res.status(200).json(captureData);
-    } catch (err) {
-        console.log(err)
-        res.status(500).json(err);
     }
 });
 
