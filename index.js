@@ -43,7 +43,7 @@ app.use("/search", search_controller);
 
 app.post("/logPayPalInfo", async (req, res) => {
     try {
-        Order.create(req.body.order).then((order) => {
+        Order.create(req.body).then((order) => {
             console.log(order, "47");
             res.json(order);
         });
