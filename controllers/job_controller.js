@@ -93,7 +93,8 @@ router.get("/category/:category", async (req, res) => {
 router.post("/", (req, res) => {
     Jobs.create(req.body)
         .then((createdJob) => {
-            console.log(createdJob);
+            console.log(createdJob, " new Job");
+            console.log(req.body, "body new Job");
             res.status(200).json(createdJob);
         })
         .catch((error) => {
