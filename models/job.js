@@ -111,6 +111,9 @@ const jobSchema = new mongoose.Schema(
             validate: [checkPrice, "Price must be above $20"],
             required: true,
         },
+        extraInfo: {
+            type: Schema.Types.Mixed,
+        },
         times: {
             type: [String],
             default: [Date(Date.now()).toString()],
